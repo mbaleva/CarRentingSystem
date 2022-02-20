@@ -7,18 +7,24 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using MassTransit;
     using System.Threading.Tasks;
+    using CarRentingSystem.Common.Messages;
+
     public class DealersService : IDealersService
     {
         private readonly ApplicationDbContext dbContext;
         private readonly ICurrentUserService userService;
+        private readonly IBus bus;
 
         public DealersService(
             ApplicationDbContext dbContext,
-            ICurrentUserService userService)
+            ICurrentUserService userService,
+            IBus bus)
         {
             this.dbContext = dbContext;
             this.userService = userService;
+            this.bus = bus;
         }
         public int GetDealerIdByUser(string userId)
         {
@@ -44,6 +50,9 @@
             };
             await this.dbContext.Dealers.AddAsync(dealer);
             await this.dbContext.SaveChangesAsync();
+
+            var message = new DealerCreatedMessage();
+            await this.bus.Publish(message);
             return dealer.Id;
         }
         public ById GetDealerById(int id)

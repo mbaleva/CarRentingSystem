@@ -37,7 +37,6 @@
             {
                 Email = model.Email,
                 UserName = model.Username,
-                FullName = model.FullName,
             };
             var result = await this.userManager.CreateAsync(user, model.Password);
         }

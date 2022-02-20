@@ -4,6 +4,7 @@
     using GreenPipes;
     using MassTransit;
     using MassTransit.RabbitMqTransport.Integration;
+
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -14,7 +15,33 @@
 
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddHealthChecks(
+            this IServiceCollection services,
+            IConfiguration configuration,
+            bool databaseHealthChecks = true,
+            bool messagingHealthChecks = true)
+        {
+            var healthChecks = services.AddHealthChecks();
 
+            if (databaseHealthChecks)
+            {
+                healthChecks
+                    .AddSqlServer(configuration.GetConnectionString("DefaultConnection"));
+            }
+
+            if (messagingHealthChecks)
+            {
+                var settings = GetMessageBrokerSettings(configuration);
+
+                var messageQueueConnectionString =
+                    $"amqp://{settings.Username}:{settings.Password}@{settings.Host}/";
+
+                healthChecks
+                    .AddRabbitMQ(rabbitConnectionString: messageQueueConnectionString);
+            }
+
+            return services;
+        }
         public static IServiceCollection AddDb<TDbContext>(
             this IServiceCollection services,
             IConfiguration config) where TDbContext : DbContext

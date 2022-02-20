@@ -19,6 +19,7 @@ namespace CarRentingSystem.Identity
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDb<ApplicationDbContext>(this.Configuration)
+                .AddHealthChecks(this.Configuration)
                 .AddAppSettings(this.Configuration)
                 .AddJwtAuthentication(this.Configuration);
 

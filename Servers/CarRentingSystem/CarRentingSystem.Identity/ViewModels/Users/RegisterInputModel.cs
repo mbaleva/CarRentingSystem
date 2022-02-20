@@ -13,8 +13,5 @@
 
         [Required]
         public string Password { get; set; }
-
-        [MinLength(5)]
-        public string FullName { get; set; }
     }
 }

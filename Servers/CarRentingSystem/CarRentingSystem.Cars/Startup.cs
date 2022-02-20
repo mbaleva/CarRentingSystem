@@ -27,6 +27,7 @@ namespace CarRentingSystem.Cars
                 .AddTransient<IDealersService, DealersService>()
                 .AddTransient<ICategoriesService, CategoriesService>()
                 .AddMessageBroker(this.Configuration)
+                .AddHealthChecks(this.Configuration)
                 .AddControllers();
         }
 

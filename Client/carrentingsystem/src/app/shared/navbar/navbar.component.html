@@ -1,12 +1,12 @@
 <nav role="navigation">
-  <ul>
-    <li><a routerLink="/">Home</a></li>
-    <li><a routerLink="/contacts">Contact Us</a></li>
-    <li><a routerLink="cars/all">All Cars</a></li>
-    <li *ngIf="authToken"><a routerLink="/cars/add">Add new Car</a></li>
-    <li class="right" *ngIf="!authToken"><a routerLink="/auth/login">Login</a></li>
-    <li class="right"  *ngIf="!authToken"><a routerLink="/auth/register">Register</a></li>
-    <li  class="right" *ngIf="authToken"><a (click)="logout()">Logout</a></li>
-  </ul>
-</nav>
-<br>
+    <ul>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/contacts">Contact Us</a></li>
+      <li><a routerLink="/cars/all">All cars</a></li>
+      <li *ngIf="authToken"><a routerLink="/cars/add">Create new car</a></li>
+      <li class="right" *ngIf="!authToken"><a routerLink="/auth/login">Login</a></li>
+      <li class="right"  *ngIf="!authToken"><a routerLink="/auth/register">Register</a></li>
+      <li  class="right" *ngIf="authToken"><a (click)="logout()">Logout</a></li>
+    </ul>
+  </nav>
+  <br>
