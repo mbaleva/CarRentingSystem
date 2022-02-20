@@ -1,0 +1,39 @@
+<div class="container">
+    <form #f="ngForm" (ngSubmit)="registerSubmitHandler(f.value)">
+        <div class="row">
+            <div class="col-25">
+                <label for="username">Username</label>
+            </div>
+            <div class="col-75">
+                <input type="text" name="username" ngModel>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="fullName">Full Name</label>
+            </div>
+            <div class="col-75">
+                <input type="text" name="fullName" ngModel>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="email">Email</label>
+            </div>
+            <div class="col-75">
+                <input type="text" name="email" ngModel>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="password">Password</label>
+            </div>
+            <div class="col-75">
+                <input type="password" name="password" ngModel>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Login">
+        </div>
+    </form>
+</div>
