@@ -1,5 +1,4 @@
-export interface Category {
-    id?: number;
-    name: string;
-    totalCarAds: number;
+export interface CategoryModel {
+    name: String,
+    id: Number,
 }

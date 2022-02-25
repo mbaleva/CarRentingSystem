@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListComponent } from './list/list.component';
-import { CreateComponent } from './create/create.component';
-import { EditComponent } from './edit/edit.component';
-import { ById } from './byid/byid.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CarsRoutingModule } from './cars-routing.module';
-import { SharedModule } from '../shared/shared.module';
-import { SearchComponent } from './search/search.component';
-import { SortComponent } from './sort/sort.component';
+import { CreateComponent } from './create/create.component';
+import { AllComponent } from './all/all.component';
+import { ByIdComponent } from './byid/byid.component';
+import { EditComponent } from './edit/edit.component';
+
+
 
 @NgModule({
-  declarations: [ListComponent, CreateComponent, EditComponent, ById, SearchComponent, SortComponent],
+  declarations: [CreateComponent, AllComponent, ByIdComponent, EditComponent],
   imports: [
     CommonModule,
-    SharedModule,
-    CarsRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CarsRoutingModule
   ],
-  exports: [ListComponent, CreateComponent, EditComponent, ById, SearchComponent]
+  exports: [CreateComponent]
 })
 export class CarsModule { }

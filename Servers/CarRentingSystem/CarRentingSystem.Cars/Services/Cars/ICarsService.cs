@@ -6,6 +6,8 @@
 
     public interface ICarsService
     {
+        bool CanDeleteOrEdit(int carId, int dealerId);
+        IEnumerable<CarInListModel> GetCarsByDealerId(int dealerId);
         IEnumerable<CarInListModel> GetAll(int page);
         Task<CarByIdModel> GetCarById(int id, string userId = null);
         Task<bool> DeleteById(int id);

@@ -26,6 +26,8 @@
             this.userService = userService;
             this.bus = bus;
         }
+        public bool CheckIfUserIsDealer(string userId)
+            => this.dbContext.Dealers.Any(x => x.UserId == userId);
         public int GetDealerIdByUser(string userId)
         {
             return this.dbContext.Dealers.Where(x => x.UserId == userId)
@@ -57,15 +59,16 @@
         }
         public ById GetDealerById(int id)
         {
-            return this.dbContext.Dealers.Where(x => x.Id == id)
-                .Select(x => new ById
-                {
-                    Id = x.Id,
-                    Name = x.FullName,
-                    PhoneNumber = x.PhoneNumber,
-                    TotalCars = x.Cars.Count,
-                })
-                .FirstOrDefault();
+            var dealerAsQueryable = this.dbContext.Dealers.Where(x => x.Id == id);
+            var dealer = dealerAsQueryable.Select(x => new ById
+            {
+                Id = x.Id,
+                Name = x.FullName,
+                PhoneNumber = x.PhoneNumber,
+                TotalCars = x.Cars.Count,
+            })
+               .FirstOrDefault();
+            return dealer;
         }
         public IEnumerable<DealerInListModel> GetAllDealers(int page, int itemsPerPage)
         {

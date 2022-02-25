@@ -1,23 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Car } from '../cars.model';
-import { CarsService } from '../cars.service';
 import { ActivatedRoute } from '@angular/router';
+import { CarModel } from '../car.model';
+import { CarsService } from '../cars.service';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+    selector: 'app-cars-byid',
+    templateUrl: './byid.component.html',
+    styleUrls: ['./byid.component.css']
 })
-export class ById implements OnInit {
-  car: Car;
-  id: string;
-  constructor(private carService: CarsService, private route: ActivatedRoute) { 
-    this.id = this.route.snapshot.paramMap.get('id');
-  }
 
-  ngOnInit(): void {
-    this.carService.getCar(this.id).subscribe(car => {
-      this.car = car;
-    });
-  }
+export class ByIdComponent implements OnInit {
+    id: String | null;
+    car!: CarModel;
+
+    constructor(private carsService: CarsService, private route: ActivatedRoute){
+        this.id = this.route.snapshot.paramMap.get('id');
+    }
+
+    ngOnInit(): void {
+        this.carsService.getCarById(this.id as string).subscribe(res => {
+            this.car = res;
+        });
+    }
 }

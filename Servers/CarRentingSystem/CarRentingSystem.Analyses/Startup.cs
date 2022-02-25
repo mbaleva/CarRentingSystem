@@ -7,6 +7,7 @@ namespace CarRentingSystem.Analyses
     using CarRentingSystem.Common.Extensions;
     using CarRentingSystem.Analyses.Data;
     using CarRentingSystem.Analyses.Consumers;
+    using CarRentingSystem.Analyses.Services;
 
     public class Startup
     {
@@ -17,11 +18,15 @@ namespace CarRentingSystem.Analyses
 
         public void ConfigureServices(IServiceCollection services) => services
                 .AddDb<ApplicationDbContext>(this.Configuration)
+                .AddJwtAuthentication(this.Configuration)
                 .AddHealthChecks(this.Configuration)
+                .AddAuthorization()
                 .AddMessageBroker(this.Configuration, true,
                     typeof(CarCreatedConsumer),
                     typeof(CarViewedConsumer),
-                    typeof(DealerCreatedConsumer));
+                    typeof(DealerCreatedConsumer))
+                .AddTransient<IStatisticsService, StatisticsService>()
+                .AddControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
             => app.AddWebServices(env);

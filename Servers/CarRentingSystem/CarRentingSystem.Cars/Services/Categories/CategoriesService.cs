@@ -34,13 +34,11 @@
             category.Name = model.Name;
             await this.dbContext.SaveChangesAsync();
         }
-        public IEnumerable<CategoryModel> GetAll(int page, int itemsPerPage)
+        public IEnumerable<CategoryModel> GetAll()
         {
             return this.dbContext.Categories
                 .OrderByDescending(x => x.Id)
-                .Skip((page - 1) * itemsPerPage)
-                .Take(itemsPerPage)
-                .Select(x => new CategoryModel { Name = x.Name, TotalCars = x.Cars.Count, Id = x.Id })
+                .Select(x => new CategoryModel { Name = x.Name , Id = x.Id })
                 .ToList();
         }
         public async Task AddCategory(AddCategoryInputModel model)

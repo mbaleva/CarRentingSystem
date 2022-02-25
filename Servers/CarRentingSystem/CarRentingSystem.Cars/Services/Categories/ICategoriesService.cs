@@ -9,7 +9,7 @@
         CategoryModel FindByIdAsync(int id);
         EditCategoryModel GetCategory(int id);
         Task UpdateCategory(EditCategoryModel model, int id);
-        IEnumerable<CategoryModel> GetAll(int page, int itemsPerPage);
+        IEnumerable<CategoryModel> GetAll();
         Task AddCategory(AddCategoryInputModel model);
         Task DeleteById(int id);
     }

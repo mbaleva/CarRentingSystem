@@ -107,11 +107,7 @@
 
                     mt.AddBus(context => Bus.Factory.CreateUsingRabbitMq(rmq =>
                     {
-                        rmq.Host(settings.Host, host =>
-                        {
-                            host.Username(settings.Username);
-                            host.Password(settings.Password);
-                        });
+                        rmq.Host(settings.Host);
 
 
                         consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>

@@ -47,18 +47,16 @@
             }
             var car = new Car
             {
+                CarName = model.Name,
                 CategoryId = model.CategoryId,
                 DealerId = dealerId,
                 ImageUrl = model.ImageUrl,
                 Manufacturer = manufacturer,
                 PricePerDay = model.PricePerDay,
                 Model = model.Model,
-                Options = new CarOptions
-                {
-                    HasAutomaticTransmission = model.HasAutomaticTransmission,
-                    HasClimateControl = model.HasClimateControl,
-                    SeatsCount = model.SeatsCount,
-                }
+                HasAutomaticTransmission = model.HasAutomaticTransmission,
+                HasClimateControl = model.HasClimateControl,
+                SeatsCount = model.SeatsCount,
             };
             await this.dbContext.Cars.AddAsync(car);
             await this.dbContext.SaveChangesAsync();
@@ -85,6 +83,7 @@
             var car = this.dbContext.Cars.Where(x => x.Id == id)
                 .Select(x => new CarByIdModel
                 {
+                    Name = x.CarName,
                     Category = x.Category.Name,
                     Dealer = new ById
                     {
@@ -94,14 +93,14 @@
                         TotalCars = x.Dealer.Cars.Count
                     },
                     PricePerDay = x.PricePerDay,
-                    HasClimateControl = x.Options.HasClimateControl,
+                    HasClimateControl = x.HasClimateControl,
                     Id = x.Id,
                     ImageUrl = x.ImageUrl,
                     IsAvailable = x.IsAvailable,
                     Manufacturer = x.Manufacturer.Name,
                     Model = x.Model,
-                    NumberOfSeats = x.Options.SeatsCount,
-                    TransmissionType = x.Options.HasAutomaticTransmission ? "Yes" : "No"
+                    NumberOfSeats = x.SeatsCount,
+                    TransmissionType = x.HasAutomaticTransmission ? "Yes" : "No"
                 }).FirstOrDefault();
 
             var message = new CarViewedMessage
@@ -115,16 +114,37 @@
         public IEnumerable<CarInListModel> GetAll(int page)
         {
             return this.dbContext.Cars
-                    .Skip((page - 1) * CARS_PER_PAGE)
-                    .Take(CARS_PER_PAGE)
+                    .Skip((page - 1) * 9)
+                    .Take(9)
                     .Select(x => new CarInListModel
                     {
                         Id = x.Id,
+                        Name = x.CarName,
                         Category = x.Category.Name,
                         ImageUrl = x.ImageUrl,
                         IsAvailable = x.IsAvailable ? "Yes" : "No",
                         Model = x.Model,
                     }).ToList();
+        }
+
+        public IEnumerable<CarInListModel> GetCarsByDealerId(int dealerId)
+        {
+            return this.dbContext.Cars
+                    .Where(x => x.DealerId == dealerId)
+                    .OrderByDescending(x => x.Id)
+                    .Select(x => new CarInListModel
+                    {
+                        Id = x.Id,
+                        Name = x.CarName,
+                        Category = x.Category.Name,
+                        ImageUrl = x.ImageUrl,
+                        IsAvailable = x.IsAvailable ? "Yes" : "No",
+                        Model = x.Model,
+                    }).ToList();
+        }
+        public bool CanDeleteOrEdit(int carId, int dealerId) 
+        {
+            return this.dbContext.Cars.Any(car => car.Id == carId && car.DealerId == dealerId);
         }
     }
 }

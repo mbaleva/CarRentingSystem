@@ -7,7 +7,7 @@
     using CarRentingSystem.Identity.Services.Users;
 
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class IdentityController : ControllerBase
     {
         private readonly IUsersService usersService;
@@ -18,8 +18,7 @@
         }
 
         [HttpPost]
-        [Route(nameof(Register))]
-        public async Task<ActionResult> Register(RegisterInputModel model)
+        public async Task<ActionResult> Register([FromBody]RegisterInputModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -29,8 +28,7 @@
             return this.Ok();
         }
         [HttpPost]
-        [Route(nameof(Login))]
-        public async Task<ActionResult<LoginSuccesModel>> Login(LoginInputModel model)
+        public async Task<ActionResult<LoginSuccesModel>> Login([FromBody]LoginInputModel model)
         {
             var data = await this.usersService.Login(model);
 

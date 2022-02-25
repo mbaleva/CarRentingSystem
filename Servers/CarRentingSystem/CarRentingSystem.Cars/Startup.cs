@@ -6,11 +6,11 @@ namespace CarRentingSystem.Cars
     using CarRentingSystem.Cars.Services.Dealers;
     using CarRentingSystem.Cars.Services.Manufacturers;
     using CarRentingSystem.Common.Extensions;
+    using CarRentingSystem.Common.Services.Users;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using System;
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,6 +26,7 @@ namespace CarRentingSystem.Cars
                 .AddTransient<IManufacturerService, ManufacturerService>()
                 .AddTransient<IDealersService, DealersService>()
                 .AddTransient<ICategoriesService, CategoriesService>()
+                .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddMessageBroker(this.Configuration)
                 .AddHealthChecks(this.Configuration)
                 .AddControllers();

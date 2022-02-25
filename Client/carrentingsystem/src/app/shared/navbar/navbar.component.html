@@ -1,12 +1,25 @@
-<nav role="navigation">
-    <ul>
-      <li><a routerLink="/">Home</a></li>
-      <li><a routerLink="/contacts">Contact Us</a></li>
-      <li><a routerLink="/cars/all">All cars</a></li>
-      <li *ngIf="authToken"><a routerLink="/cars/add">Create new car</a></li>
-      <li class="right" *ngIf="!authToken"><a routerLink="/auth/login">Login</a></li>
-      <li class="right"  *ngIf="!authToken"><a routerLink="/auth/register">Register</a></li>
-      <li  class="right" *ngIf="authToken"><a (click)="logout()">Logout</a></li>
-    </ul>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Car Renting System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active"><a class="nav-link" routerLink="/">Home</a></li>
+        <li class="nav-item active"><a  class="nav-link" routerLink="/contacts">Contact us</a></li>
+        <li class="nav-item active"><a  class="nav-link"  routerLink="/cars/all">All cars</a></li>
+        <li class="nav-item active">
+          <a [routerLink]="['/cars/all/']"
+          [queryParams]="{ page: '1' }" 
+          queryParamsHandling="merge"
+          ></a>
+        </li>
+        <li class="nav-item active" *ngIf="authToken && isDealer"><a class="nav-link" routerLink="/cars/create">Create new car</a></li>
+        <li class="nav-item active" *ngIf="authToken && !isDealer"><a class="nav-link" routerLink="/dealers/create">Become a dealer</a></li>
+        <li class="nav-item active right"  *ngIf="!authToken"><a class="nav-link" routerLink="/auth/login">Login</a></li>
+        <li class="nav-item active right" *ngIf="!authToken"><a class="nav-link" routerLink="/auth/register">Register</a></li>
+        <li class="nav-item active right"  *ngIf="authToken"><a class="nav-link" (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
   </nav>
-  <br>

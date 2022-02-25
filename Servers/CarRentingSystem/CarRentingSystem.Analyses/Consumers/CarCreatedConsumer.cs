@@ -9,6 +9,11 @@
     public class CarCreatedConsumer : IConsumer<CarCreatedMessage>
     {
         private readonly ApplicationDbContext dbContext;
+
+        public CarCreatedConsumer(ApplicationDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public async Task Consume(ConsumeContext<CarCreatedMessage> context)
         {
             var stats = this.dbContext.Data.Where(x => x.Id > 0).FirstOrDefault();

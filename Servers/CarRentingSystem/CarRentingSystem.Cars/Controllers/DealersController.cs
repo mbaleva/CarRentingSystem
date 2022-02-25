@@ -22,6 +22,8 @@
             this.dealersService = dealersService;
             this.userService = userService;
         }
+        public bool IsDealer([FromQuery]string userId)
+            => this.dealersService.CheckIfUserIsDealer(userId);
         [Authorize]
         public ActionResult<int> GetDealerId()
         {
@@ -37,9 +39,14 @@
             int id = await this.dealersService.AddDealerAsync(model);
             return id;
         }
-        public ActionResult<ById> GetDealerById(int id)
+        public ActionResult<ById> GetDealerById([FromQuery]int dealerId,
+            [FromQuery]string userId)
         {
-            return this.dealersService.GetDealerById(id);
+            if (this.dealersService.CheckIfUserIsDealer(userId))
+            {
+                return this.dealersService.GetDealerById(dealerId);
+            }
+            return this.BadRequest("You are not a dealer!!!");
         }
         public IEnumerable<DealerInListModel> All(int id)
         {

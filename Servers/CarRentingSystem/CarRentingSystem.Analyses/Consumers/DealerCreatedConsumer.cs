@@ -9,6 +9,7 @@
     public class DealerCreatedConsumer : IConsumer<DealerCreatedMessage>
     {
         private readonly ApplicationDbContext dbContext;
+        
         public DealerCreatedConsumer(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;

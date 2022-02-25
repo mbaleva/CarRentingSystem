@@ -1,56 +1,51 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable, resolveForwardRef } from '@angular/core';
+import { resetFakeAsyncZone } from '@angular/core/testing';
 import { Observable } from 'rxjs';
-import { Car } from './cars.model';
-import { Category } from './category.model';
+import { environment } from 'src/environments/environment';
+import { CarInListModel } from './car.list.model';
+import { CarModel } from './car.model';
+import { CategoryModel } from './category.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
+
 export class CarsService {
-  carsPath: string = environment.dealersApiUrl + 'carads/';
-  carPathWithoutSlash  = this.carsPath.slice(0, -1);
+    carsUrl = environment.dealersUrl + '/cars';
+    categoriesUrl = environment.dealersUrl + '/categories/all';
+    constructor(private httpClient: HttpClient){}
 
-  constructor(private http: HttpClient) { }
+    addCar(data: FormData): Observable<any> {
+        return this.httpClient.post(this.carsUrl + '/add', data);
+    }
+    getAllCategories() : Array<CategoryModel> {
+        let data = new Array<CategoryModel>();
+        
 
-  getCars(): Observable<Array<Car>> {
-    return this.http.get<Array<Car>>(this.carsPath);
-  }
-
-  getUserCars(): Observable<Array<Car>> {
-    return this.http.get<Array<Car>>(this.carsPath + 'mine');
-  }
-
-  getCar(id: string): Observable<Car> {
-    return this.http.get<Car>(this.carsPath + id);
-  }
-
-  createCar(car: Car): Observable<Car> {
-    return this.http.post<Car>(this.carsPath, car);
-  }
-
-  editCar(id: string, car: Car): Observable<Car> {
-    return this.http.put<Car>(this.carsPath + id, car);
-  }
-
-  deleteCar(id: string) {
-    return this.http.delete(this.carsPath + id);
-  }
-
-  getCategories(): Observable<Array<Category>> {
-    return this.http.get<Array<Category>>(this.carsPath + 'categories')
-  }
-
-  search(queryString): Observable<Array<Car>> {
-    return this.http.get<Array<Car>>(this.carPathWithoutSlash + queryString)
-  }
-
-  sort(queryString): Observable<Array<Car>> {
-    return this.http.get<Array<Car>>(this.carPathWithoutSlash + queryString)
-  }
-
-  changeAvailability(id): Observable<boolean> {
-    return this.http.put<boolean>(this.carsPath + id + '/ChangeAvailability', {})
-  }
+        this.httpClient.get(this.categoriesUrl).subscribe(res => {
+            let resAsArray = (res as Array<CategoryModel>);
+            for(let category of resAsArray){
+                data.push(category as CategoryModel);
+            }
+            console.log(data);
+            
+        });
+        console.log(data);
+        return data;
+    }
+    getCars(): Array<CarInListModel> {
+        let data = new Array<CarInListModel>();
+        this.httpClient.get(this.carsUrl + '/all').subscribe(res => {
+            console.log(res);
+            let resAsArray = res as Array<CarInListModel>;
+            for(let car of resAsArray){
+                data.push(car as CarInListModel);
+            }
+        });
+        return data;
+    }
+    getCarById(id: String): Observable<CarModel>  {
+        return this.httpClient.get<CarModel>(this.carsUrl + '/byid?id=' + id);
+    }
 }

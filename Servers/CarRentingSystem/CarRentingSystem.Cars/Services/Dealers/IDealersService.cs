@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     public interface IDealersService
     {
+        bool CheckIfUserIsDealer(string userId);
         Task<int> AddDealerAsync(AddDealerInputModel model);
         bool IsDealer(string userId);
         int GetDealerIdByUser(string userId);

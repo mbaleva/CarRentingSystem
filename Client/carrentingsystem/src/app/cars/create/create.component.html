@@ -1,49 +1,57 @@
-<div class="container">
+<br/>
+<div class="container-fluid">
     <div class="row">
-        <div class="col-lg-12">
-            <form [formGroup]="carForm" (ngSubmit)="create()">
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Manufacturer</label>
-                  <input type="text" class="form-control" formControlName="manufacturer">
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Model</label>
-                  <input type="text" class="form-control" formControlName="model">
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlSelect1">Select Category</label>
-                  <select class="form-control" formControlName="category">
-                    <option *ngFor="let c of categories" [ngValue]="c.id">{{c.name}}</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Image URL</label>
-                  <input type="text" class="form-control" formControlName="imageUrl">
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Price Per Day</label>
-                  <input type="number" class="form-control" formControlName="pricePerDay">
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Climate Control</label>
-                  <select class="form-control" formControlName="hasClimateControl">
-                    <option  [ngValue]="true">Yes</option>
-                    <option  [ngValue]="false">No</option>
-                  </select>              
-                </div>
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Number of Seats</label>
-                  <input type="number" class="form-control" formControlName="numberOfSeats">
-                </div>  
-                <div class="form-group">
-                  <label for="exampleFormControlInput1">Transmission Type</label>
-                  <select class="form-control" formControlName="transmissionType">
-                    <option  [ngValue]="1">Manual</option>
-                    <option  [ngValue]="2">Automatic</option>
-                  </select>              
-                </div>
-                <button class="btn btn-primary" type="submit" [disabled]="carForm.invalid">Create</button>
-              </form>
-        </div>
+        <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <form  [formGroup]="form" (ngSubmit)="carCreatedHandler()">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" formControlName="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input type="text" class="form-control" id="model" formControlName="model">
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL</label>
+                        <input type="text" class="form-control" id="imageUrl" formControlName="imageUrl">
+                    </div>
+                    <div class="form-group">
+                        <label for="manufacturerName">Manufacturer Name</label>
+                        <input type="text" class="form-control" id="manufacturerName" formControlName="manufacturerName">
+                    </div>
+                    <div class="form-group">
+                        <label for="pricePerDay">Price Per Day</label>
+                        <input type="text" class="form-control" id="pricePerDay" formControlName="pricePerDay">
+                    </div>
+                    <div class="form-group">
+                        <label for="hasClimateControl"> Climate Control</label>
+                        <select class="form-control" formControlName="hasClimateControl">
+                          <option  [ngValue]="true">Yes</option>
+                          <option  [ngValue]="false">No</option>
+                        </select>              
+                    </div>
+                    <div class="form-group">
+                        <label for="hasClimateControl">Transmission Type</label>
+                        <select class="form-control" formControlName="hasAutomaticTransmission">
+                          <option  [ngValue]="true">Automatic</option>
+                          <option  [ngValue]="false">Manual</option>
+                        </select>              
+                    </div>
+                    <div class="form-group">
+                        <label for="seatsCount">Seats Count</label>
+                        <input type="text" class="form-control" id="seatsCount" formControlName="seatsCount">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryId">Select category</label>
+                        <select class="form-control" formControlName="categoryId">
+                          <option *ngFor="let c of categories" [ngValue]="c.id">{{c.name}}</option>
+                        </select>
+                      </div>
+                    <br/>
+                    <button type="submit" class="btn btn-primary">Add new car</button>
+                </form>
+            </div>
+        <div class="col-lg-4"></div>
     </div>
 </div>

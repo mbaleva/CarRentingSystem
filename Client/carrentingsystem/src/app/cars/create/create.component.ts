@@ -1,44 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from 'ngx-strongly-typed-forms';
-import { Car } from '../cars.model';
-import { Validators } from '@angular/forms';
-import { CarsService } from '../cars.service';
-import { ToastrService } from 'ngx-toastr';
-import { Category } from '../category.model';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CarsService } from '../cars.service';
+import { CategoryModel } from '../category.model';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+    selector: 'app-cars-create',
+    templateUrl: './create.component.html',
+    styleUrls: ['./create.component.css']
 })
-export class CreateComponent implements OnInit {
-  carForm: FormGroup<Car>;
-  categories: Array<Category>
-  constructor(private fb: FormBuilder, private carsService: CarsService, public toastr: ToastrService, private router: Router) {
-    this.carsService.getCategories().subscribe(res => {
-      this.categories = res;
-    })
-   }
+export class CreateComponent {
 
-  ngOnInit(): void {
-    this.carForm = this.fb.group<Car>({
-      manufacturer: [null, Validators.required],
-      model: [null, Validators.required],
-      category: [null, Validators.required],
-      imageUrl: [null, Validators.required],
-      pricePerDay: [null, Validators.required],
-      hasClimateControl: [null, Validators.required],
-      numberOfSeats: [null, Validators.required],
-      transmissionType: [null, Validators.required],
-    })
-  }
-
-
-  create() {
-    this.carsService.createCar(this.carForm.value).subscribe(res => {
-      this.router.navigate(['cars', 'mine'])
-    })
-  }
-
+    form!: FormGroup;
+    categories: Array<CategoryModel>;
+    constructor(private router: Router, private formBuilder: FormBuilder, private carsService: CarsService){
+        
+        this.form = this.formBuilder.group({
+            name: ['', Validators.required],
+            model: ['', Validators.required],
+            imageUrl: ['', Validators.required],
+            manufacturerName: ['', Validators.required],
+            categoryId: ['', Validators.required],
+            pricePerDay: ['', Validators.required],
+            hasClimateControl: [],
+            hasAutomaticTransmission: ['', Validators.required],
+            seatsCount: []
+        });
+        this.categories = this.carsService.getAllCategories();
+    }
+    carCreatedHandler(){
+        this.carsService.addCar(this.form.value).subscribe(res => {
+            this.router.navigateByUrl(`/cars/byid/${res}`);
+        });
+    }
 }

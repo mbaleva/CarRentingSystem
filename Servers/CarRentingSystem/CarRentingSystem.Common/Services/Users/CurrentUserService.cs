@@ -4,7 +4,7 @@
     using System;
     using System.Security.Claims;
 
-    public class CurrentUserService
+    public class CurrentUserService : ICurrentUserService
     {
         private readonly ClaimsPrincipal userClaims;
 

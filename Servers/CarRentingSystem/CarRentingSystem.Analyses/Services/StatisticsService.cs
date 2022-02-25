@@ -7,6 +7,10 @@
     public class StatisticsService : IStatisticsService
     {
         private readonly ApplicationDbContext dbContext;
+        public StatisticsService(ApplicationDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
         public StatisticsOutputModel GetAll()
         {
             var stats = this.dbContext.Data.Where(x => x.Id > 0).FirstOrDefault();
