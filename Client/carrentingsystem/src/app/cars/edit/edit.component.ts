@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CarModel } from '../car.model';
 import { CarsService } from '../cars.service';
 import { CategoryModel } from '../category.model';
@@ -16,26 +16,50 @@ export class EditComponent implements OnInit {
   id!: String | null;
   car!: CarModel;
 
-  constructor(private carsService: CarsService, private formBuilder: FormBuilder, private activatedRoute: ActivatedRoute) {
+  constructor(private carsService: CarsService, 
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute,
+    private router: Router) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.categories = this.carsService.getAllCategories();
+    this.form = this.formBuilder.group({
+      manufacturerName: ['', Validators.required],
+      model: ['', Validators.required],
+      categoryId: [0, Validators.required],
+      name: ['', Validators.required],
+      imageUrl: ['', Validators.required],
+      pricePerDay: [0, Validators.required],
+      hasClimateControl: [false, Validators.required],
+      seatsCount: [0, Validators.required],
+      transmissionType: [0, Validators.required],
+    })
    }
-   carUpdatedHandler(){}
+   carUpdatedHandler(){
+     this.carsService.updateCar(this.form.value, this.id as String, localStorage.getItem('DealerId') as String)
+        .subscribe(res => {
+          this.router.navigate(['']);
+        });
+   }
 
-   ngOnInit(): void {
-       this.carsService.getCarById(this.id as String).subscribe(car => {
-         this.car = car;
-       });
+   async ngOnInit(): Promise<void> {
+    await this.getCategories();
+    await this.getCar();
+   }
+   getCategories() {
+     this.categories = this.carsService.getAllCategories();
+   }
+   getCar() {
+     this.carsService.getCarById(this.id as String).subscribe(response => {
        this.form = this.formBuilder.group({
-        name: [this.car.name],
-        model: [this.car.model],
-        imageUrl: [this.car.imageUrl],
-        manufacturerName: [this.car.manufacturer],
-        pricePerDay: [this.car.pricePerDay],
-        hasClimateControl: [this.car.hasClimateControl],
-        hasAutomaticTransmission: [this.car.transmissionType],
-        seatsCount: [this.car.numberOfSeats],
-        categoryId: []
-      })
+          manufacturerName: [response.manufacturer, Validators.required],
+          model: [response.model, Validators.required],
+          categoryId: [0, Validators.required],
+          name: [response.name, Validators.required],
+          imageUrl: [response.imageUrl, Validators.required],
+          pricePerDay: [response.pricePerDay, Validators.required],
+          hasClimateControl: [response.hasClimateControl, Validators.required],
+          seatsCount: [response.numberOfSeats, Validators.required],
+          transmissionType: [response.transmissionType, Validators.required],
+       });
+     });
    }
 }

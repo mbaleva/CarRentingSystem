@@ -1,0 +1,16 @@
+<nav class="navbar navbar-light bg-light">
+    <form [formGroup]="form" (ngSubmit)="submitHandler()" class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search by car name" formControlName="searchTerm">
+      <label for="categoryId">Category</label>
+      <select class="form-control" formControlName="categoryId">
+        <option ngValue="-1">None</option>
+        <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
+      </select>
+      <label for="manufacturerId">Manufacturer</label>
+      <select class="form-control" formControlName="manufacturerId">
+        <option ngValue="-1">None</option>
+        <option *ngFor="let manufacturer of manufacturers" [ngValue]="manufacturer.id">{{manufacturer.name}} ({{manufacturer.totalCars}})</option>
+      </select>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </nav>

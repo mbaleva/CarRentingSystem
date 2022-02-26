@@ -3,14 +3,14 @@
     <div class="row">
         <div class="col-lg-4"></div>
             <div class="col-lg-4">
-                <form  [formGroup]="form" (ngSubmit)="carUpdatedHandler()">
+                <form  [formGroup]="this.form" (ngSubmit)="carUpdatedHandler()">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" formControlName="name">
                     </div>
                     <div class="form-group">
                         <label for="model">Model</label>
-                        <input type="text" class="form-control" id="model" formControlName="model">
+                        <input type="text"  class="form-control" id="model" formControlName="model">
                     </div>
                     <div class="form-group">
                         <label for="imageUrl">Image URL</label>
@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group">
                         <label for="manufacturerName">Manufacturer Name</label>
-                        <input type="text" class="form-control" id="manufacturerName" formControlName="manufacturerName">
+                        <input type="text"  class="form-control" id="manufacturerName" formControlName="manufacturerName">
                     </div>
                     <div class="form-group">
                         <label for="pricePerDay">Price Per Day</label>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group">
                         <label for="seatsCount">Seats Count</label>
-                        <input type="text" class="form-control" id="seatsCount" formControlName="seatsCount">
+                    <input type="text" class="form-control" id="seatsCount" formControlName="seatsCount">
                     </div>
                     <div class="form-group">
                         <label for="categoryId">Select category</label>

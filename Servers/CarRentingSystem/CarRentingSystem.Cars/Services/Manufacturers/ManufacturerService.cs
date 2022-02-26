@@ -2,6 +2,8 @@
 {
     using CarRentingSystem.Cars.Data;
     using CarRentingSystem.Cars.Data.Models;
+    using CarRentingSystem.Cars.Models.Manufacturers;
+    using System.Collections.Generic;
     using System.Linq;
 
     public class ManufacturerService : IManufacturerService
@@ -12,6 +14,18 @@
         {
             this.dbContext = dbContext;
         }
+
+        public IEnumerable<ManufacturerModel> GetAll()
+        {
+            return this.dbContext.Manufacturers
+                .Select(x => new ManufacturerModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    TotalCars = x.Cars.Count,
+                }).ToList();
+        }
+
         public Manufacturer GetByName(string name)
         {
             return this.dbContext.Manufacturers.Where(x => x.Name == name)

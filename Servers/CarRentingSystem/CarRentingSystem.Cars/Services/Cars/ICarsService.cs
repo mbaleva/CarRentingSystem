@@ -6,6 +6,8 @@
 
     public interface ICarsService
     {
+        IEnumerable<CarInListModel> SearchCars(SearchCarsInputModel model);
+        Task UpdateCarAsync(AddCarInputModel model, int id);
         bool CanDeleteOrEdit(int carId, int dealerId);
         IEnumerable<CarInListModel> GetCarsByDealerId(int dealerId);
         IEnumerable<CarInListModel> GetAll(int page);

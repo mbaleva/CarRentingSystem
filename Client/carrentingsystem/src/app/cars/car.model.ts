@@ -11,5 +11,5 @@ export interface CarModel {
     hasClimateControl: boolean;
     numberOfSeats: number;
     transmissionType: string;
-    dealerInfo: DealerInfo;
+    dealer: DealerInfo;
 }

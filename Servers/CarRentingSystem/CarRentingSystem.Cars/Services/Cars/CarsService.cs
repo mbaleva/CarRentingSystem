@@ -12,6 +12,7 @@
     using System.Threading.Tasks;
     using MassTransit;
     using CarRentingSystem.Common.Messages;
+    using Microsoft.EntityFrameworkCore;
 
     public class CarsService : ICarsService
     {
@@ -146,5 +147,103 @@
         {
             return this.dbContext.Cars.Any(car => car.Id == carId && car.DealerId == dealerId);
         }
+
+        public async Task UpdateCarAsync(AddCarInputModel model, int id)
+        {
+            var car = this.dbContext.Cars.Where(x => x.Id == id)
+                .Include(x => x.Manufacturer)
+                .FirstOrDefault();
+
+            car.CarName = model.Name;
+            car.CategoryId = model.CategoryId;
+            car.HasAutomaticTransmission = model.HasAutomaticTransmission;
+            car.HasClimateControl = model.HasClimateControl;
+            car.ImageUrl = model.ImageUrl;
+            car.Model = car.Model;
+            car.PricePerDay = car.PricePerDay;
+            car.SeatsCount = car.SeatsCount;
+
+            if (car.Manufacturer.Name != model.ManufacturerName)
+            {
+                car.Manufacturer = await this.HandleManufacturer(model.ManufacturerName);
+            }
+            await this.dbContext.SaveChangesAsync();
+        }
+        private async Task<Manufacturer> HandleManufacturer(string name) 
+        {
+            Manufacturer manufacturer;
+            if (!this.dbContext.Manufacturers.Any(x => x.Name == name))
+            {
+                await this.dbContext.Manufacturers.AddAsync(new Manufacturer { Name = name });
+            }
+            manufacturer = this.dbContext.Manufacturers.Where(x => x.Name == name).FirstOrDefault();
+            await this.dbContext.SaveChangesAsync();
+            return manufacturer;
+        }
+        public IEnumerable<CarInListModel> SearchCars(SearchCarsInputModel model)
+        {
+            IEnumerable<CarInListModel> cars = new List<CarInListModel>();
+
+            if (model.CategoryId == -1 && model.ManufacturerId == -1 && model.SearchTerm != null)
+            {
+                cars = this.SearchCarsByName(model.SearchTerm);
+            }
+            if (model.SearchTerm != null && model.CategoryId != -1)
+            {
+                cars = this.SearchCarsByNameAndCategory(model.CategoryId, model.SearchTerm);
+            }
+            if (model.SearchTerm != null && model.CategoryId != -1 && model.ManufacturerId != -1)
+            {
+                cars = this.SearchCarsByNameCategoryAndManufacturer(model.CategoryId, model.ManufacturerId, model.SearchTerm);
+            }
+            return cars;
+        }
+
+        private IEnumerable<CarInListModel> SearchCarsByNameCategoryAndManufacturer(
+            int categoryId,
+            int manufacturerId,
+            string searchTerm)
+            => this.dbContext.Cars.Where(x => x.CategoryId == categoryId &&
+                x.ManufacturerId == manufacturerId &&
+                x.CarName.Contains(searchTerm))
+                .Select(x => new CarInListModel
+                {
+                    Id = x.Id,
+                    Category = x.Category.Name,
+                    ImageUrl = x.ImageUrl,
+                    IsAvailable = x.IsAvailable.ToString(),
+                    Model = x.Model,
+                    Name = x.CarName,
+                }).ToList();
+
+        private IEnumerable<CarInListModel> SearchCarsByNameAndCategory(
+            int categoryId,
+            string searchTerm) => 
+                this.dbContext.Cars.Where(x => x.CategoryId == categoryId &&
+                x.CarName.Contains(searchTerm))
+                .Select(x => new CarInListModel 
+                {
+                    Id = x.Id,
+                    Category = x.Category.Name,
+                    ImageUrl = x.ImageUrl,
+                    IsAvailable = x.IsAvailable.ToString(),
+                    Model = x.Model,
+                    Name = x.CarName,
+                }).ToList();
+                
+
+        private IEnumerable<CarInListModel> SearchCarsByName(
+            string searchTerm)
+            =>  this.dbContext.Cars
+                    .Where(x => x.CarName.Contains(searchTerm))
+                    .Select(x => new CarInListModel
+                    {
+                        Name = x.CarName,
+                        Model = x.Model,
+                        IsAvailable = x.IsAvailable.ToString(),
+                        Id = x.Id,
+                        ImageUrl = x.ImageUrl,
+                        Category = x.Category.Name,
+                    }).ToList();
     }
 }

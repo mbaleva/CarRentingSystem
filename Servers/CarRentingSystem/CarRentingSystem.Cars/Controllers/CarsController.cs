@@ -12,7 +12,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    [Route("[controller]/[action]")]
+    [Route("/[controller]/[action]")]
     public class CarsController : ControllerBase
     {
         private readonly ICarsService cars;
@@ -72,5 +72,19 @@
             }
             return this.BadRequest();
         }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromQuery] int dealerId,
+            [FromQuery] int carId, [FromBody]AddCarInputModel input)
+        {
+            if (this.cars.CanDeleteOrEdit(carId, dealerId) || this.currentUser.IsAdmin)
+            {
+                await this.cars.UpdateCarAsync(input, carId);
+                return this.Ok();
+            }
+            return this.BadRequest();
+        }
+        public IEnumerable<CarInListModel> Search([FromQuery]SearchCarsInputModel input)
+            => this.cars.SearchCars(input);   
     }
 }

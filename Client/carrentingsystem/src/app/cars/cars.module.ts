@@ -6,11 +6,12 @@ import { CreateComponent } from './create/create.component';
 import { AllComponent } from './all/all.component';
 import { ByIdComponent } from './byid/byid.component';
 import { EditComponent } from './edit/edit.component';
+import { SearchComponent } from './search/search.component';
 
 
 
 @NgModule({
-  declarations: [CreateComponent, AllComponent, ByIdComponent, EditComponent],
+  declarations: [CreateComponent, AllComponent, ByIdComponent, EditComponent, SearchComponent],
   imports: [
     CommonModule,
     FormsModule,

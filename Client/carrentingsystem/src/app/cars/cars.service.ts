@@ -1,11 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, resolveForwardRef } from '@angular/core';
 import { resetFakeAsyncZone } from '@angular/core/testing';
+import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CarInListModel } from './car.list.model';
 import { CarModel } from './car.model';
 import { CategoryModel } from './category.model';
+import { ManufacturerModel } from './manufacturer.model';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +16,7 @@ import { CategoryModel } from './category.model';
 export class CarsService {
     carsUrl = environment.dealersUrl + '/cars';
     categoriesUrl = environment.dealersUrl + '/categories/all';
+    manufacturersUrl = environment.dealersUrl + '/manufacturers';
     constructor(private httpClient: HttpClient){}
 
     addCar(data: FormData): Observable<any> {
@@ -47,5 +50,14 @@ export class CarsService {
     }
     getCarById(id: String): Observable<CarModel>  {
         return this.httpClient.get<CarModel>(this.carsUrl + '/byid?id=' + id);
+    }
+    updateCar(data: FormData, carId: String, dealerId: String): Observable<any> {
+        return this.httpClient.post(this.carsUrl + `/edit?carId=${carId}&dealerId=${dealerId}`, data);
+    }
+    getManufacturers(): Observable<Array<ManufacturerModel>> {
+        return this.httpClient.get<Array<ManufacturerModel>>(this.manufacturersUrl + '/getAll');
+    }
+    search(searchTerm: String, categoryId: Number, manufacturerId: Number): Observable<any> {
+        return this.httpClient.get(this.carsUrl + `/Search?searchTerm=${searchTerm}&categoryId=${categoryId}&manufacturerId=${manufacturerId}`);
     }
 }
