@@ -12,7 +12,11 @@ export class AllComponent implements OnInit {
   constructor(private carsService: CarsService) { 
 
   }
-
+  updateCarsForSearch(data: any) {
+    console.log('I am here');
+    console.log(data);
+    this.cars = data as Array<CarInListModel>;
+  }
   ngOnInit(): void {
     this.assignCars();
   }

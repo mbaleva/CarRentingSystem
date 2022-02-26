@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit {
   categories!: Array<CategoryModel>; 
   manufacturers!: Array<ManufacturerModel>;
   form!: FormGroup;
-  @Output('emitter') emitter = new EventEmitter<Array<CarModel>>();
+  @Output() carsEmitter = new EventEmitter<Array<CarModel>>();
   constructor(private carsService: CarsService, private router: Router, private fb: FormBuilder) { }
 
   async ngOnInit(): Promise<void> {
@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
     let manufacturerId = this.form.get('manufacturerId')?.value as unknown as Number;
     this.carsService.search(searchTerm, categoryId, manufacturerId)
       .subscribe(res => {
-        this.emitter.emit(res);
+        this.carsEmitter.emit(res);
       });
   }
   getCategories() {

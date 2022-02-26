@@ -89,7 +89,7 @@
         public async Task UpdateDealer(EditDealerInputModel model)
         {
             var dealer = this.dbContext.Dealers.Where(x => x.Id == model.Id).FirstOrDefault();
-            dealer.FullName = model.FullName;
+            dealer.FullName = model.Name;
             dealer.PhoneNumber = model.PhoneNumber;
             await this.dbContext.SaveChangesAsync();
         }

@@ -29,4 +29,7 @@ export class DealersService {
                 console.log(x);
             });
     }
+    edit(data: FormData): Observable<any> {
+        return this.httpClient.post(this.dealersPath + '/edit', data);
+    }
 }

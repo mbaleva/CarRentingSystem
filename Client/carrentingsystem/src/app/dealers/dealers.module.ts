@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DealersRoutingModule } from './dealers-routing.module';
 import { CreateComponent } from './create/create.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EditComponent } from './edit/edit.component';
 
 
 
 @NgModule({
-  declarations: [CreateComponent, ProfileComponent],
+  declarations: [CreateComponent, ProfileComponent, EditComponent],
   imports: [
     CommonModule,
     FormsModule,
