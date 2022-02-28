@@ -26,10 +26,14 @@ export class EditComponent implements OnInit {
       phoneNumber: ['', Validators.required]
     })
   }
-  async ngOnInit(): Promise<void> {
-    await this.getDealer();
-    console.log(`On Init method => ` + this.dealer);
-    await this.initializeForm();
+  ngOnInit(): void {
+    this.dealersService.getById(this.userId as String, this.id)
+      .subscribe(d => {
+        this.dealer = d;
+      });
+    console.log(`After getting the dealer from the server => ` + this.dealer.name, this.dealer.phoneNumber, this.dealer.totalCars);
+    this.initializeForm();
+    console.log('After initializing form');
   }
   initializeForm() {
     this.form = this.fb.group({
@@ -37,15 +41,9 @@ export class EditComponent implements OnInit {
       phoneNumber: [this.dealer.phoneNumber, Validators.required]
     })
   }
-  getDealer() {
-    this.dealersService.getById(this.userId as String, this.id)
-      .subscribe(dealer => {
-        console.log(dealer);
-        this.dealer = dealer;
-      });
-  }
   submitHandler() {
-    this.dealersService.edit(this.form.value).subscribe(res => {
+    console.log(this.form.value);
+    this.dealersService.edit(this.form.value, this.id).subscribe(res => {
       this.router.navigateByUrl('/dealers/profile/' + this.id);
     });
   }

@@ -29,7 +29,10 @@ export class DealersService {
                 console.log(x);
             });
     }
-    edit(data: FormData): Observable<any> {
-        return this.httpClient.post(this.dealersPath + '/edit', data);
+    edit(data: FormData, id: String): Observable<any> {
+        return this.httpClient.post(this.dealersPath + `/edit?id=${id}`, data);
+    }
+    delete(userId: String, dealerId: String): Observable<any> {
+        return this.httpClient.get<DealerInfo>(this.dealersPath + `/Edit?dealerId=${dealerId}&userId=${userId}`);
     }
 }

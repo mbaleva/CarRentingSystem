@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CarInListModel } from 'src/app/cars/car.list.model';
 import { DealerInfo } from 'src/app/cars/dealer.model';
 import { DealersService } from '../dealers.service';
@@ -14,7 +15,7 @@ export class ProfileComponent implements OnInit {
   dealer!: DealerInfo;
   cars!: Array<CarInListModel>;
 
-  constructor(private dealersService: DealersService) { }
+  constructor(private dealersService: DealersService, private router: Router) { }
 
   ngOnInit(): void {
     this.getUserData();
@@ -37,5 +38,11 @@ export class ProfileComponent implements OnInit {
   }
   deleteCar(carId: String){
     this.dealersService.deleteCarById(carId, this.dealerId);
+  }
+  deleteProfile() {
+    this.dealersService.delete(this.userId, this.dealerId)
+      .subscribe(res => {
+        this.router.navigateByUrl('/');
+      });
   }
 }

@@ -6,11 +6,11 @@
                 <form  [formGroup]="this.form" (ngSubmit)="submitHandler()">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" [value]="this.dealer.name" formControlName="name">
+                        <input type="text" class="form-control" id="name" formControlName="name">
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber">Phone Number</label>
-                        <input type="text"  class="form-control" id="phoneNumber" [value]="this.dealer.phoneNumber" formControlName="phoneNumber">
+                        <input type="text"  class="form-control" id="phoneNumber" formControlName="phoneNumber">
                     </div>
                     <br/>
                     <button class="btn btn-success">Update dealer</button>

@@ -53,9 +53,9 @@
             return this.dealersService.GetAllDealers(id, ITEMS_PER_PAGE);
         }
         [HttpPost]
-        public async Task<ActionResult> Edit([FromBody]EditDealerInputModel model)
+        public async Task<ActionResult> Edit([FromBody]EditDealerInputModel model, [FromQuery]int id)
         {
-            if (this.userService.IsAdmin || this.dealersService.CanEdit(this.userService.UserId, model.Id))
+            if (this.userService.IsAdmin || this.dealersService.CanEdit(this.userService.UserId, id))
             {
                 await this.dealersService.UpdateDealer(model);
             }
