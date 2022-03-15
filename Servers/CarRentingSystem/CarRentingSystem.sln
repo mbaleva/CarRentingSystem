@@ -1,17 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Identity", "CarRentingSystem.Identity\CarRentingSystem.Identity.csproj", "{A6B60B78-47B2-4AB2-9F58-81B664390D8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Identity", "CarRentingSystem.Identity\CarRentingSystem.Identity.csproj", "{A6B60B78-47B2-4AB2-9F58-81B664390D8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Common", "CarRentingSystem.Common\CarRentingSystem.Common.csproj", "{5149764A-B178-47FD-9BD4-CC23D3CE5406}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Common", "CarRentingSystem.Common\CarRentingSystem.Common.csproj", "{5149764A-B178-47FD-9BD4-CC23D3CE5406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Cars", "CarRentingSystem.Cars\CarRentingSystem.Cars.csproj", "{27DEEE5D-EC7D-4E0A-9F13-1089C3D0E623}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Cars", "CarRentingSystem.Cars\CarRentingSystem.Cars.csproj", "{27DEEE5D-EC7D-4E0A-9F13-1089C3D0E623}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Analyses", "CarRentingSystem.Analyses\CarRentingSystem.Analyses.csproj", "{A820D7D5-D06E-4A11-AA61-EDF66BAC849C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Analyses", "CarRentingSystem.Analyses\CarRentingSystem.Analyses.csproj", "{A820D7D5-D06E-4A11-AA61-EDF66BAC849C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.HealthChecks", "CarRentingSystem.HealthChecks\CarRentingSystem.HealthChecks.csproj", "{636D51AC-409C-47CC-9F7D-AA0BCBB51B6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.HealthChecks", "CarRentingSystem.HealthChecks\CarRentingSystem.HealthChecks.csproj", "{636D51AC-409C-47CC-9F7D-AA0BCBB51B6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Renting", "CarRentingSystem.Renting\CarRentingSystem.Renting.csproj", "{20F2BD33-D924-48D0-9938-A0FAAD11AFAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{636D51AC-409C-47CC-9F7D-AA0BCBB51B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{636D51AC-409C-47CC-9F7D-AA0BCBB51B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{636D51AC-409C-47CC-9F7D-AA0BCBB51B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20F2BD33-D924-48D0-9938-A0FAAD11AFAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F2BD33-D924-48D0-9938-A0FAAD11AFAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F2BD33-D924-48D0-9938-A0FAAD11AFAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F2BD33-D924-48D0-9938-A0FAAD11AFAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
