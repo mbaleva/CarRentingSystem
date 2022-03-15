@@ -4,6 +4,7 @@ import { AllComponent } from './all/all.component';
 import { ByIdComponent } from './byid/byid.component';
 import { CreateComponent } from './create/create.component';
 import { EditComponent } from './edit/edit.component';
+import { RentComponent } from './rent/rent.component';
 
 const routes: Routes = [
     {
@@ -17,6 +18,9 @@ const routes: Routes = [
     },
     {
         path: 'edit/:id', component: EditComponent
+    },
+    {
+        path: 'rent', component: RentComponent
     },
 ];
 

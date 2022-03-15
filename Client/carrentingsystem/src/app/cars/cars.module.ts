@@ -7,11 +7,18 @@ import { AllComponent } from './all/all.component';
 import { ByIdComponent } from './byid/byid.component';
 import { EditComponent } from './edit/edit.component';
 import { SearchComponent } from './search/search.component';
+import { RentComponent } from './rent/rent.component';
 
 
 
 @NgModule({
-  declarations: [CreateComponent, AllComponent, ByIdComponent, EditComponent, SearchComponent],
+  declarations: [CreateComponent,
+    AllComponent,
+    ByIdComponent,
+    EditComponent,
+    SearchComponent,
+    RentComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
