@@ -1,0 +1,109 @@
+version: "3.8"
+
+services:
+	data:
+		container_name: sqlserver
+		image: mcr.microsoft.com/mssql/server
+		ports:
+			- "1433:1433"
+		environment:
+			- ACCEPT_EULA=Y
+			- SA_PASSWORD=myStrongPassword123
+		volumes:
+			-sqldata:/var/opt/mssql
+		networks:
+			- carrentingsystem
+	messaging:
+        	container_name: rabbitmq
+        	image: rabbitmq
+        	ports:
+            		- "5672:5672"
+        	hostname: "rabbitmq"
+        	environment:
+            		- RABBITMQ_DEFAULT_USER=rabbitmquser
+            		- RABBITMQ_DEFAULT_PASS=rabbitmqPassword12
+        	volumes:
+            		- rabbitmq:/var/lib/rabbitmq/mnesia
+        	networks: 
+            		- carrentingsystem
+	auth:
+        	container_name: auth
+        	image: mbaleva/carrentingsystem.identity
+        	build:
+            		context: ./Server
+            		dockerfile: ./CarRentingSystem.Identity/Dockerfile
+        	ports: 
+            		- "5001:80"
+        	environment:
+            		- ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Identity;User Id=sa; Password=myStrongPassword123;MultipleActiveResultSets=true
+        	restart: on-failure
+        	networks: 
+            		- carrentingsystem
+        	depends_on:
+            		- data
+	cars:
+        	container_name: cars
+        	image: mbaleva/carrentingsystem.cars
+        	build:
+            		context: ./Server
+            		dockerfile: ./CarRentingSystem.Cars/Dockerfile
+        	ports: 
+            		- "5002:80"
+        	environment:
+            		- ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Cars;User Id=sa; Password=myStrongPassword123;MultipleActiveResultSets=true
+        	restart: on-failure
+        	networks: 
+            		- carrentingsystem
+        	depends_on:
+            		- data
+	analyses:
+        	container_name: auth
+        	image: mbaleva/carrentingsystem.analyses
+        	build:
+            		context: ./Server
+            		dockerfile: ./CarRentingSystem.Analyses/Dockerfile
+        	ports: 
+            		- "5003:80"
+        	environment:
+            		- ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Analyses;User Id=sa; Password=myStrongPassword123;MultipleActiveResultSets=true
+        	restart: on-failure
+        	networks: 
+            		- carrentingsystem
+        	depends_on:
+            		- data
+	renting:
+        	container_name: renting
+        	image: mbaleva/carrentingsystem.renting
+        	build:
+            		context: ./Server
+            		dockerfile: ./CarRentingSystem.Renting/Dockerfile
+        	ports: 
+            		- "5004:80"
+        	environment:
+            		- ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Renting;User Id=sa; Password=myStrongPassword123;MultipleActiveResultSets=true
+        	restart: on-failure
+        	networks: 
+            		- carrentingsystem
+        	depends_on:
+            		- data
+	client:
+        	container_name: client
+        	image: mbaleva/carrentingsystem.client
+        	build:
+            		context: ./Client
+            		dockerfile: ./Dockerfile
+            		args:
+                		configuration: local
+        		ports: 
+            			- "80:80"
+        		restart: on-failure
+        		depends_on:
+            			- auth
+            			- cars
+            			- analyses
+				- renting
+	networks:
+		carrentingsystem
+	volumes:
+		sqldata:
+		rabbitmq:

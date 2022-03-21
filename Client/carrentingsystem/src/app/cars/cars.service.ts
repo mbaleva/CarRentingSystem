@@ -17,6 +17,8 @@ export class CarsService {
     carsUrl = environment.dealersUrl + '/cars';
     categoriesUrl = environment.dealersUrl + '/categories/all';
     manufacturersUrl = environment.dealersUrl + '/manufacturers';
+    rentingUrl = environment.rentingUrl + '/appointments';
+
     constructor(private httpClient: HttpClient){}
 
     addCar(data: FormData): Observable<any> {
@@ -59,5 +61,8 @@ export class CarsService {
     }
     search(searchTerm: String, categoryId: Number, manufacturerId: Number): Observable<any> {
         return this.httpClient.get(this.carsUrl + `/Search?searchTerm=${searchTerm}&categoryId=${categoryId}&manufacturerId=${manufacturerId}`);
+    }
+    rentCar(data: FormData): Observable<any> {
+        return this.httpClient.post(this.rentingUrl + '/create', data);
     }
 }

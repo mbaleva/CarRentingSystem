@@ -20,7 +20,7 @@ const routes: Routes = [
         path: 'edit/:id', component: EditComponent
     },
     {
-        path: 'rent', component: RentComponent
+        path: 'rent/:id', component: RentComponent
     },
 ];
 
