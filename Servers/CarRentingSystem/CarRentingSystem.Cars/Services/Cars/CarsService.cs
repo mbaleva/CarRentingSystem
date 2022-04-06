@@ -80,7 +80,6 @@
         }
         public async Task<CarByIdModel> GetCarById(int id, string userId = null)
         {
-
             var car = this.dbContext.Cars.Where(x => x.Id == id)
                 .Select(x => new CarByIdModel
                 {
@@ -107,7 +106,9 @@
             var message = new CarViewedMessage
             {
                 CarId = car.Id,
-                UserId = userId
+                UserId = userId,
+                ManufacturerName = car.Manufacturer,
+                Model = car.Model,
             };
             await this.bus.Publish(message);
             return car;

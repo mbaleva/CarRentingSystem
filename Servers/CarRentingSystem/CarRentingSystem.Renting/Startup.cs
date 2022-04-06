@@ -6,6 +6,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using CarRentingSystem.Common.Extensions;
     using CarRentingSystem.Renting.Data;
+    using CarRentingSystem.Renting.Services;
 
     public class Startup
     {
@@ -20,6 +21,7 @@
                 .AddHealthChecks(this.Configuration)
                 .AddAuthorization()
                 .AddMessageBroker(this.Configuration)
+                .AddTransient<IAppointmentsService, AppointmentsService>()
                 .AddControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

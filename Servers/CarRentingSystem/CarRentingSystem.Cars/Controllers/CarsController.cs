@@ -59,6 +59,7 @@
                 model = await this.cars.GetCarById(id, currentUser.UserId);
             }
             model = await this.cars.GetCarById(id);
+       
             return model;
         }
         [Authorize]

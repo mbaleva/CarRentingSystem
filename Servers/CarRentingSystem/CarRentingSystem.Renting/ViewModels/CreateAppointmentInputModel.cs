@@ -4,7 +4,7 @@
     public class CreateAppointmentInputModel
     {
         public int CarId { get; set; }
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         public double TotalPrice { get; set; }
 

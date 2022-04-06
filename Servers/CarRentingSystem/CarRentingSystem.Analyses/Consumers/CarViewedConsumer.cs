@@ -10,9 +10,8 @@
     {
         private readonly ApplicationDbContext dbContext;
         public CarViewedConsumer(ApplicationDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+            => this.dbContext = dbContext;
+
         public async Task Consume(ConsumeContext<CarViewedMessage> context)
         {
             var message = context.Message;

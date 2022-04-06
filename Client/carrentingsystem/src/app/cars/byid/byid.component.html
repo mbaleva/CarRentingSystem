@@ -17,8 +17,8 @@
             <div><h3>Has Automatic Transmission {{car.transmissionType}}</h3></div>
             <div><h3>Dealer Phone: {{ car.dealer.phoneNumber }}</h3></div>
             <div><h3>Dealer Name: {{ car.dealer.name }}</h3></div>
-            <div><h3>Dealer Phone: {{ car.dealer.totalCars }}</h3></div>
-            <div><a routerLink="/cars/rent"></a></div>
+            <div><h3>Dealer Total Cars: {{ car.dealer.totalCars }}</h3></div>
+            <div><a routerLink="/cars/rent/{{car.id}}?pricePerDay={{car.pricePerDay}}">Rent car</a></div>
         </div>
     </div>
 </div>

@@ -6,14 +6,13 @@
     using CarRentingSystem.Renting.ViewModels;
     using System.Threading.Tasks;
     [Route("/[controller]/[action]")]
-    public class AppointmentsController : Controller
+    [ApiController]
+    public class AppointmentsController : ControllerBase
     {
         private readonly IAppointmentsService appointmentsService;
 
         public AppointmentsController(IAppointmentsService appointmentsService)
-        {
-            this.appointmentsService = appointmentsService;
-        }
+            => this.appointmentsService = appointmentsService;
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateAppointmentInputModel input)
@@ -21,5 +20,6 @@
             await this.appointmentsService.CreateAsync(input);
             return this.Ok();
         }
+        
     }
 }

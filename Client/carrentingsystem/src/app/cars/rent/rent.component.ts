@@ -25,6 +25,7 @@ export class RentComponent {
         });
     }
     rentHandler(): void {
+        console.log(this.form.value);
         this.carsService.rentCar(this.form.value).subscribe(x => {});
     }
 
