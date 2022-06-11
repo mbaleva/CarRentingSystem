@@ -17,22 +17,19 @@ export class DealersService {
     createDealer(data: any): Observable<any> {
         return this.httpClient.post(this.dealersPath + '/add', data);
     }
-    getById(userId: String, dealerId: String): Observable<DealerInfo> {
+    getById(userId: string, dealerId: string): Observable<DealerInfo> {
         return this.httpClient.get<DealerInfo>(this.dealersPath + `/GetDealerById?dealerId=${dealerId}&userId=${userId}`);
     }
-    getMyCars(userId: String, dealerId: String): Observable<Array<CarInListModel>> {
+    getMyCars(userId: string, dealerId: string): Observable<Array<CarInListModel>> {
         return this.httpClient.get<Array<CarInListModel>>(this.carsPath + `/GetCarsByDealerId?dealerId=${dealerId}&userId=${userId}`);
     }
-    deleteCarById(carId: String, dealerId: String) {
-        return this.httpClient.get(this.carsPath + `/Delete?dealerId=${dealerId}&carId=${carId}`)
-            .subscribe(x => {
-                console.log(x);
-            });
+    deleteCarById(carId: string, dealerId: string): Observable<any> {
+        return this.httpClient.get(this.carsPath + `/Delete?dealerId=${dealerId}&carId=${carId}`);
     }
-    edit(data: FormData, id: String): Observable<any> {
+    edit(data: FormData, id: string): Observable<any> {
         return this.httpClient.post(this.dealersPath + `/edit?id=${id}`, data);
     }
-    delete(userId: String, dealerId: String): Observable<any> {
+    delete(userId: string, dealerId: string): Observable<any> {
         return this.httpClient.get<DealerInfo>(this.dealersPath + `/Edit?dealerId=${dealerId}&userId=${userId}`);
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { finalize, map, take } from 'rxjs/operators';
 import { DealerInfo } from 'src/app/cars/dealer.model';
 import { DealersService } from '../dealers.service';
 import { DefaultDealerModel } from '../default.dealer.model';
@@ -12,28 +13,29 @@ import { DefaultDealerModel } from '../default.dealer.model';
 })
 export class EditComponent implements OnInit {
   dealer! : DealerInfo;
-  userId = localStorage.getItem('userId');
-  id: String;
+  userId = localStorage.getItem('userId') as string;
+  id!: string;
   form!: FormGroup;
   constructor(private router: Router,
      private route: ActivatedRoute, 
      private dealersService: DealersService,
      private fb: FormBuilder) {
-    this.id = this.route.snapshot.paramMap.get('id') as String;
-    this.dealer = new DefaultDealerModel();
+    this.id = this.route.snapshot.paramMap.get('id') as string;
     this.form = this.fb.group({
       name: ['', Validators.required],
       phoneNumber: ['', Validators.required]
     })
   }
   ngOnInit(): void {
-    this.dealersService.getById(this.userId as String, this.id)
-      .subscribe(d => {
-        this.dealer = d;
-      });
-    console.log(`After getting the dealer from the server => ` + this.dealer.name, this.dealer.phoneNumber, this.dealer.totalCars);
-    this.initializeForm();
-    console.log('After initializing form');
+    this.dealersService.getById(this.userId, this.id).pipe(
+      take(1),
+      map(dealer => {
+        this.dealer = dealer;
+      }),
+      finalize(() => {
+        this.initializeForm();
+      })
+    ).subscribe();
   }
   initializeForm() {
     this.form = this.fb.group({
