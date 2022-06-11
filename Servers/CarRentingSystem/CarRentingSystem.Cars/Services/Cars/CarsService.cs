@@ -100,7 +100,7 @@
                     Manufacturer = x.Manufacturer.Name,
                     Model = x.Model,
                     NumberOfSeats = x.SeatsCount,
-                    TransmissionType = x.HasAutomaticTransmission ? "Yes" : "No"
+                    TransmissionType = x.HasAutomaticTransmission
                 }).FirstOrDefault();
 
             var message = new CarViewedMessage

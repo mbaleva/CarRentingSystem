@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map, take } from 'rxjs/operators';
 import { CarModel } from '../car.model';
 import { CarsService } from '../cars.service';
 import { CategoryModel } from '../category.model';
@@ -19,14 +20,14 @@ export class SearchComponent implements OnInit {
   @Output() carsEmitter = new EventEmitter<Array<CarModel>>();
   constructor(private carsService: CarsService, private router: Router, private fb: FormBuilder) { }
 
-  async ngOnInit(): Promise<void> {
-    await this.getCategories();
-    await this.getManufacturers();
+  ngOnInit() {
+    this.getCategories();
+    this.getManufacturers();
     this.initializeForm();
   }
   initializeForm() {
     this.form = this.fb.group({
-      searchTerm: [],
+      searchTerm: [''],
       manufacturerId: [],
       categoryId: []
     })
@@ -41,11 +42,15 @@ export class SearchComponent implements OnInit {
       });
   }
   getCategories() {
-    this.categories = this.carsService.getAllCategories();
+    this.carsService.getAllCategories().pipe(
+      take(1),
+      map(res => this.categories = res)
+    ).subscribe();
   }
   getManufacturers() {
-    this.carsService.getManufacturers().subscribe(res => {
-      this.manufacturers = res;
-    });
+    this.carsService.getManufacturers().pipe(
+      take(1),
+      map(res => this.manufacturers = res)
+    ).subscribe();
   }
 }

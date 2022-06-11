@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { map, take } from 'rxjs/operators';
 import { CarInListModel } from '../car.list.model';
 import { CarsService } from '../cars.service';
 
@@ -21,6 +22,11 @@ export class AllComponent implements OnInit {
     this.assignCars();
   }
   assignCars(): void {
-    this.cars = this.carsService.getCars();
+    this.carsService.getCars().pipe(
+      take(1),
+      map(res => {
+        this.cars = res;
+      })
+    ).subscribe();
   }
 }

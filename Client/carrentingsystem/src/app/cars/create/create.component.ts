@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map, take } from 'rxjs/operators';
 import { CarsService } from '../cars.service';
 import { CategoryModel } from '../category.model';
 
@@ -26,11 +27,21 @@ export class CreateComponent {
             hasAutomaticTransmission: ['', Validators.required],
             seatsCount: []
         });
-        this.categories = this.carsService.getAllCategories();
+        this.categories = this.getCategories();
     }
-    carCreatedHandler(){
-        this.carsService.addCar(this.form.value).subscribe(res => {
-            this.router.navigateByUrl(`/cars/byid/${res}`);
-        });
+    getCategories(): CategoryModel[] {
+        this.carsService.getAllCategories().pipe(
+            take(1),
+            map(res => this.categories = res)
+        ).subscribe();
+        return this.categories;
+    }
+    carCreatedHandler() {
+        this.carsService.addCar(this.form.value).pipe(
+            take(1),
+            map(res => {
+                this.router.navigateByUrl(`/cars/byid/${res}`);
+            })
+        ).subscribe();
     }
 }

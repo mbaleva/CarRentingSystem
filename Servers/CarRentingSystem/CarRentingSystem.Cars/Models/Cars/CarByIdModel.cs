@@ -20,7 +20,7 @@
 
         public int NumberOfSeats { get; set; }
 
-        public string TransmissionType { get; set; }
+        public bool TransmissionType { get; set; }
         public ById Dealer { get; set; }
     }
 }

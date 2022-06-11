@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map, take } from 'rxjs/operators';
 import { CarModel } from '../car.model';
 import { CarsService } from '../cars.service';
 
@@ -10,16 +11,17 @@ import { CarsService } from '../cars.service';
 })
 
 export class ByIdComponent implements OnInit {
-    id: String | null;
+    id!: string;
     car!: CarModel;
 
     constructor(private carsService: CarsService, private route: ActivatedRoute){
-        this.id = this.route.snapshot.paramMap.get('id');
+        this.id = this.route.snapshot.paramMap.get('id') as string;
     }
 
     ngOnInit(): void {
-        this.carsService.getCarById(this.id as string).subscribe(res => {
-            this.car = res;
-        });
+        this.carsService.getCarById(this.id).pipe(
+            take(1),
+            map(res => this.car = res)
+        ).subscribe();
     }
 }
