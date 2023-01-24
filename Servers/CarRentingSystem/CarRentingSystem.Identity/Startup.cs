@@ -9,6 +9,7 @@ namespace CarRentingSystem.Identity
     using CarRentingSystem.Identity.Services.Users;
     using CarRentingSystem.Identity.Services.Jwt;
     using CarRentingSystem.Common.Extensions;
+    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
@@ -32,6 +33,14 @@ namespace CarRentingSystem.Identity
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-                => app.AddWebServices(env);
+        {
+            app.AddWebServices(env);
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var serviceProvider = serviceScope.ServiceProvider;
+
+            var db = serviceProvider.GetRequiredService<DbContext>();
+
+            db.Database.Migrate();
+        }
     }
 }

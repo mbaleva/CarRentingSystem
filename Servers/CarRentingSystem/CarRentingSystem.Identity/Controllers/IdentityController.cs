@@ -31,7 +31,7 @@
         public async Task<ActionResult<LoginSuccesModel>> Login([FromBody]LoginInputModel model)
         {
             var data = await this.usersService.Login(model);
-
+            
             if (data == null)
             {
                 return this.BadRequest();
