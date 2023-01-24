@@ -12,6 +12,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    [ApiController]
     [Route("/[controller]/[action]")]
     public class CarsController : ControllerBase
     {
@@ -30,6 +31,7 @@
             this.dealers = dealers;
             this.currentUser = currentUser;
         }
+        [HttpGet]
         public IEnumerable<CarInListModel> GetCarsByDealerId([FromQuery] int dealerId,
             [FromQuery]string userId)
         {
@@ -40,6 +42,7 @@
             return null;
         }
         [Authorize]
+        [HttpPost]
         public async Task<ActionResult<int>> Add([FromBody]AddCarInputModel input)
         {
             if (!this.ModelState.IsValid)
@@ -48,9 +51,11 @@
             }
             return await this.cars.AddAsync(input, this.currentUser.UserId);
         }
+        [HttpGet]
         public IEnumerable<CarInListModel> All([FromQuery]int page = 1)
             => this.cars.GetAll(page);
         [Authorize]
+        [HttpGet]
         public async Task<ActionResult<CarByIdModel>> ById([FromQuery]int id)
         {
             CarByIdModel model;
@@ -63,6 +68,7 @@
             return model;
         }
         [Authorize]
+        [HttpGet]
         public async Task<IActionResult> Delete([FromQuery]int dealerId,
             [FromQuery]int carId)
         {
@@ -85,6 +91,7 @@
             }
             return this.BadRequest();
         }
+        [HttpGet]
         public IEnumerable<CarInListModel> Search([FromQuery]SearchCarsInputModel input)
             => this.cars.SearchCars(input);   
     }

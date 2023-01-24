@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
+    [ApiController]
     [Route("api/[controller]/[action]")]
     public class DealersController : ControllerBase
     {
@@ -22,9 +22,11 @@
             this.dealersService = dealersService;
             this.userService = userService;
         }
+        [HttpGet]
         public bool IsDealer([FromQuery]string userId)
             => this.dealersService.CheckIfUserIsDealer(userId);
         [Authorize]
+        [HttpGet]
         public ActionResult<int> GetDealerId()
         {
             if (!this.dealersService.IsDealer(this.userService.UserId))
@@ -39,6 +41,7 @@
             int id = await this.dealersService.AddDealerAsync(model);
             return id;
         }
+        [HttpGet]
         public ActionResult<ById> GetDealerById([FromQuery]int dealerId,
             [FromQuery]string userId)
         {
@@ -48,6 +51,7 @@
             }
             return this.BadRequest("You are not a dealer!!!");
         }
+        [HttpGet]
         public IEnumerable<DealerInListModel> All(int id)
         {
             return this.dealersService.GetAllDealers(id, ITEMS_PER_PAGE);

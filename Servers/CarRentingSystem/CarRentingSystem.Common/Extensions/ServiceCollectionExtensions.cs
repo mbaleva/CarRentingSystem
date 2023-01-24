@@ -21,6 +21,8 @@
             bool databaseHealthChecks = true,
             bool messagingHealthChecks = true)
         {
+            services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
             var healthChecks = services.AddHealthChecks();
 
             if (databaseHealthChecks)

@@ -14,6 +14,7 @@
         {
             this.manufacturerService = manufacturer;
         }
+        [HttpGet]
         public IEnumerable<ManufacturerModel> GetAll()
             => this.manufacturerService.GetAll();
     }

@@ -23,7 +23,6 @@ namespace CarRentingSystem.Identity
                 .AddHealthChecks(this.Configuration)
                 .AddAppSettings(this.Configuration)
                 .AddJwtAuthentication(this.Configuration);
-
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IJwtService, JwtService>();
 

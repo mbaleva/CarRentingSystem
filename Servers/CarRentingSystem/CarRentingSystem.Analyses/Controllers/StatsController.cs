@@ -10,6 +10,7 @@
 
         public StatsController(IStatisticsService statistics)
             => this.statistics = statistics;
+        [HttpGet]
         public ActionResult<StatisticsOutputModel> GetAll()
                 => this.statistics.GetAll();
     }
