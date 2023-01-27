@@ -23,7 +23,6 @@ export class CreateComponent  {
     });
   }
   submitHandler(): void {
-    console.log(this.form.value);
     this.dealersService.createDealer(this.form.value).subscribe(x => {
         localStorage.setItem('DealerId', x);
         localStorage.setItem('IsDealer', 'true');

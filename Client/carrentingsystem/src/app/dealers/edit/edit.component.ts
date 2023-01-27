@@ -44,7 +44,6 @@ export class EditComponent implements OnInit {
     })
   }
   submitHandler() {
-    console.log(this.form.value);
     this.dealersService.edit(this.form.value, this.id).subscribe(res => {
       this.router.navigateByUrl('/dealers/profile/' + this.id);
     });

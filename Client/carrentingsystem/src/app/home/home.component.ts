@@ -18,10 +18,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClient.get(this.url).subscribe(res => {
-      console.log(res);
-      console.log(this.data);
       this.data = (res as StatisticsModel);
-      console.log(this.data);
     });
   }
 

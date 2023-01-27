@@ -25,30 +25,9 @@ export class CarsService {
         return this.httpClient.post(this.carsUrl + '/add', data);
     }
     getAllCategories() : Observable<Array<CategoryModel>> {
-        // let data = new Array<CategoryModel>();
-        
-
-        // this.httpClient.get(this.categoriesUrl).subscribe(res => {
-        //     let resAsArray = (res as Array<CategoryModel>);
-        //     for(let category of resAsArray){
-        //         data.push(category as CategoryModel);
-        //     }
-        //     console.log(data);
-            
-        // });
-        // console.log(data);
         return this.httpClient.get<Array<CategoryModel>>(this.categoriesUrl);
     }
     getCars(): Observable<Array<CarInListModel>> {
-        // let data = new Array<CarInListModel>();
-        // this.httpClient.get(this.carsUrl + '/all').subscribe(res => {
-        //     console.log(res);
-        //     let resAsArray = res as Array<CarInListModel>;
-        //     for(let car of resAsArray){
-        //         data.push(car as CarInListModel);
-        //     }
-        // });
-        // return data;
         return this.httpClient.get<Array<CarInListModel>>(this.carsUrl + '/all');
     }
     getCarById(id: String): Observable<CarModel>  {

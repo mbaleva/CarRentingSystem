@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Diagnostics.HealthChecks;
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder AddWebServices(
@@ -29,6 +30,7 @@
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseHealthChecks("/health");
 
             return app;
         }
