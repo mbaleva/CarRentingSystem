@@ -9,7 +9,6 @@ namespace CarRentingSystem.Identity
     using CarRentingSystem.Identity.Services.Users;
     using CarRentingSystem.Identity.Services.Jwt;
     using CarRentingSystem.Common.Extensions;
-    using Microsoft.EntityFrameworkCore;
 
     public class Startup
     {
@@ -25,6 +24,7 @@ namespace CarRentingSystem.Identity
                 .AddJwtAuthentication(this.Configuration);
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IJwtService, JwtService>();
+            services.AddSwagger();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -32,14 +32,6 @@ namespace CarRentingSystem.Identity
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.AddWebServices(env);
-            using var serviceScope = app.ApplicationServices.CreateScope();
-            var serviceProvider = serviceScope.ServiceProvider;
-
-            var db = serviceProvider.GetRequiredService<DbContext>();
-
-            db.Database.Migrate();
-        }
+            => app.MigrateDatabase().AddWebServices(env);
     }
 }

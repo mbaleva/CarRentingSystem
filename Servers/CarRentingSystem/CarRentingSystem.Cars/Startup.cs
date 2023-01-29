@@ -29,10 +29,11 @@ namespace CarRentingSystem.Cars
                 .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddMessageBroker(this.Configuration)
                 .AddHealthChecks(this.Configuration)
+                .AddSwagger()
                 .AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-                => app.AddWebServices(env);
+                => app.MigrateDatabase().AddWebServices(env);
     }
 }

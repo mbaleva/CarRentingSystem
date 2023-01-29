@@ -3,6 +3,7 @@
     using CarRentingSystem.Common.Settings;
     using GreenPipes;
     using MassTransit;
+    using MassTransit.RabbitMqTransport;
     using MassTransit.RabbitMqTransport.Integration;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -19,10 +20,8 @@
             this IServiceCollection services,
             IConfiguration configuration,
             bool databaseHealthChecks = true,
-            bool messagingHealthChecks = true)
+            bool messagingHealthChecks = false)
         {
-            services.AddSwaggerGen();
-            services.AddEndpointsApiExplorer();
             var healthChecks = services.AddHealthChecks();
 
             if (databaseHealthChecks)
@@ -36,12 +35,18 @@
                 var settings = GetMessageBrokerSettings(configuration);
 
                 var messageQueueConnectionString =
-                    $"amqp://{settings.Username}:{settings.Password}@{settings.Host}/";
+                    $"amqp://{settings.Username}:{settings.Password}@{settings.Host}:5672/";
 
                 healthChecks
                     .AddRabbitMQ(rabbitConnectionString: messageQueueConnectionString);
             }
 
+            return services;
+        }
+        public static IServiceCollection AddSwagger(this IServiceCollection services) 
+        {
+            services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
             return services;
         }
         public static IServiceCollection AddDb<TDbContext>(
@@ -109,9 +114,14 @@
 
                     mt.AddBus(context => Bus.Factory.CreateUsingRabbitMq(rmq =>
                     {
-                        rmq.Host(settings.Host);
-
-
+                        rmq.Host("amqp://" + settings.Host, (config) => 
+                        {
+                            config.Username(settings.Username);
+                            config.Password(settings.Password);
+                        });
+                        Console.WriteLine(settings.Host);
+                        Console.WriteLine(settings.Username);
+                        Console.WriteLine(settings.Password);
                         consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
                         {
                             //endpoint.PrefetchCount = 6;

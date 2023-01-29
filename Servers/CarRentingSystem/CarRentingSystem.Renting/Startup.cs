@@ -22,9 +22,10 @@
                 .AddAuthorization()
                 .AddMessageBroker(this.Configuration)
                 .AddTransient<IAppointmentsService, AppointmentsService>()
+                .AddSwagger()
                 .AddControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            => app.AddWebServices(env);
+            => app.MigrateDatabase().AddWebServices(env);
     }
 }

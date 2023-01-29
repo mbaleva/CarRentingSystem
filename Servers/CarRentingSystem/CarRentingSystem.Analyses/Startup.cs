@@ -26,9 +26,10 @@ namespace CarRentingSystem.Analyses
                     typeof(CarViewedConsumer),
                     typeof(DealerCreatedConsumer))
                 .AddTransient<IStatisticsService, StatisticsService>()
+                .AddSwagger()
                 .AddControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-            => app.AddWebServices(env);
+            => app.MigrateDatabase().AddWebServices(env);
     }
 }
