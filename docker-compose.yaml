@@ -8,10 +8,8 @@ services:
       - sqldata:/var/opt/mssql
     ports:
       - "1433:1433"
-    environment:
-      MSSQL_SA_PASSWORD: "myCoolPassword123#?!"
-      ACCEPT_EULA: "Y"
-      MSSQL_PID: "Developer"
+    env_file:
+      - ./.env/local/database-initial-config.local.env
     networks:
       carrentingsystem-network:
 
@@ -22,9 +20,8 @@ services:
       - "5672:5672"
       - "15672:15672"
     hostname: rabbitmq
-    environment:
-      - RABBITMQ_DEFAULT_USER=rabbitmquser
-      - RABBITMQ_DEFAULT_PASS=myCoolPassword123#?!
+    env_file:
+      - ./.env/local/message-broker-initial-config.local.env
     volumes:
       - rabbitmq:/var/lib/rabbitmq/mnesia
     networks: 
@@ -40,7 +37,8 @@ services:
       - "9001:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Identity;User Id=sa; Password=myCoolPassword123#?!;MultipleActiveResultSets=true
+    env_file:
+      - ./.env/local/database-credentials.local.env
     restart: on-failure
     networks:
       - carrentingsystem-network
@@ -56,11 +54,10 @@ services:
       - "9002:80"
       - "9003:443"
     environment:
-      - MessageBrokerSettings__Username=rabbitmquser
-      - MessageBrokerSettings__Password=myCoolPassword123#?!
-      - MessageBrokerSettings__Host=rabbitmq
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Cars;User Id=sa; Password=myCoolPassword123#?!;MultipleActiveResultSets=true
+    env_file:
+      - ./.env/local/database-credentials.local.env
+      - ./.env/local/message-broker-settings.local.env
     restart: on-failure
     networks:
       - carrentingsystem-network
@@ -76,11 +73,10 @@ services:
       - "9004:80"
       - "9005:443"
     environment:
-      - MessageBrokerSettings__Username=rabbitmquser
-      - MessageBrokerSettings__Password=myCoolPassword123#?!
-      - MessageBrokerSettings__Host=rabbitmq
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Cars;User Id=sa; Password=myCoolPassword123#?!;MultipleActiveResultSets=true
+    env_file:
+      - ./.env/local/database-credentials.local.env
+      - ./.env/local/message-broker-settings.local.env
     restart: on-failure
     networks:
       - carrentingsystem-network
@@ -96,16 +92,27 @@ services:
       - "9006:80"
       - "9007:443"
     environment:
-      - MessageBrokerSettings__Username=rabbitmquser
-      - MessageBrokerSettings__Password=myCoolPassword123#?!
-      - MessageBrokerSettings__Host=rabbitmq
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=CarRentingSystem.Cars;User Id=sa; Password=myCoolPassword123#?!;MultipleActiveResultSets=true
+    env_file:
+      - ./.env/local/database-credentials.local.env
+      - ./.env/local/message-broker-settings.local.env
     restart: on-failure
     networks:
       - carrentingsystem-network
     depends_on: 
       - sqlserver
+
+  
+  client:
+    container_name: client
+    image: mbaleva/carrentingsystemclient:latest
+    build: 
+      dockerfile: "Client/carrentingsystem/Dockerfile"
+    ports:
+      - "9008:80"
+    restart: on-failure
+    networks:
+      - carrentingsystem-network
 
   healthchecks:
         container_name: healthchecks
@@ -115,15 +122,8 @@ services:
             dockerfile: ./CarRentalSystem.HealthChecks/Dockerfile
         ports: 
             - "5500:80"
-        environment:
-            - HealthChecks-UI__HealthChecks__0__Name=Identity
-            - HealthChecks-UI__HealthChecks__0__Uri=http://identity/health
-            - HealthChecks-UI__HealthChecks__1__Name=Cars
-            - HealthChecks-UI__HealthChecks__1__Uri=http://cars/health
-            - HealthChecks-UI__HealthChecks__2__Name=Analyses
-            - HealthChecks-UI__HealthChecks__2__Uri=http://analyses/health
-            - HealthChecks-UI__HealthChecks__4__Name=Renting
-            - HealthChecks-UI__HealthChecks__4__Uri=http://renting/health
+        env_file:
+          - ./.env/local/health-checks-urls.local.env
         restart: on-failure
         networks: 
             - carrentingsystem-network
