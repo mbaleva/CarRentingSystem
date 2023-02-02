@@ -5,11 +5,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["./Servers/CarRentingSystem/CarRentingSystem.HealthChecks/CarRentingSystem.HealthChecks.csproj", "CarRentingSystem.HealthChecks/"]
-COPY ["./Servers/CarRentingSystem/CarRentingSystem.Common/CarRentingSystem.Common.csproj", "CarRentingSystem.Common/"]
-RUN dotnet restore "CarRentingSystem.HealthChecks/CarRentingSystem.HealthChecks.csproj"
+COPY ["./Servers/CarRentingSystem/CarRentingSystem.HealthChecks/CarRentingSystem.HealthChecks.csproj", "./Servers/CarRentingSystem/CarRentingSystem.HealthChecks/"]
+COPY ["./Servers/CarRentingSystem/CarRentingSystem.Common/CarRentingSystem.Common.csproj", "./Servers/CarRentingSystem/CarRentingSystem.Common/"]
+RUN dotnet restore "Servers/CarRentingSystem/CarRentingSystem.HealthChecks/CarRentingSystem.HealthChecks.csproj"
 COPY . .
-WORKDIR "/src/CarRentingSystem.HealthChecks"
+WORKDIR "/src/Servers/CarRentingSystem/CarRentingSystem.HealthChecks"
 RUN dotnet build "CarRentingSystem.HealthChecks.csproj" -c Release -o /app/build
 
 FROM build AS publish

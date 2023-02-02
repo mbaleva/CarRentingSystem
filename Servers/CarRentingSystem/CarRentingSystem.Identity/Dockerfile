@@ -5,14 +5,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["./Servers/CarRentingSystem/CarRentingSystem.Identity", "CarRentingSystem.Identity"]
-COPY ["./Servers/CarRentingSystem/CarRentingSystem.Common", "CarRentingSystem.Common"]
-RUN dotnet restore "CarRentingSystem.Identity/CarRentingSystem.Identity.csproj"
-RUN dotnet build "CarRentingSystem.Identity/CarRentingSystem.Identity.csproj" -c Release -o /app/build
+COPY ["./Servers/CarRentingSystem/CarRentingSystem.Identity", "./Servers/CarRentingSystem/CarRentingSystem.Identity"]
+COPY ["./Servers/CarRentingSystem/CarRentingSystem.Common", "./Servers/CarRentingSystem/CarRentingSystem.Common"]
+RUN dotnet restore "Servers/CarRentingSystem/CarRentingSystem.Identity/CarRentingSystem.Identity.csproj"
+RUN dotnet build "Servers/CarRentingSystem/CarRentingSystem.Identity/CarRentingSystem.Identity.csproj" -c Release -o /app/build
 
 
 FROM build AS publish
-RUN dotnet publish "CarRentingSystem.Identity/CarRentingSystem.Identity.csproj" -c Release -o /app/publish
+RUN dotnet publish "Servers/CarRentingSystem/CarRentingSystem.Identity/CarRentingSystem.Identity.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

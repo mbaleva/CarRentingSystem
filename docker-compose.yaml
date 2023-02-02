@@ -113,6 +113,8 @@ services:
     restart: on-failure
     networks:
       - carrentingsystem-network
+    depends_on: 
+      - sqlserver
 
   healthchecks:
         container_name: healthchecks
