@@ -16,9 +16,14 @@ pipeline {
             steps {
 		    script {
 			    docker.withRegistry('https://index.docker.io/v1/', 'DockerHub'){
-			    	    def recipesweb = docker.image("mbaleva/recipesweb")
-				        recipesweb.push("1.0.${env.BUILD_ID}")
-				        recipesweb.push('latest')
+                        def images = ["carrentingsystemclient", "carrentingsystemidentity", "carrentingsystemcars", "carrentingsystemanalyses", "carrentingsystemhealthchecks", "carrentingsystemrenting"]
+			    	    images.each() {
+                            def currentImage = docker.image("mbaleva/" + it)
+                            currentImage.push("latest")
+                        }
+                        def carrentingsystemclient = docker.image("mbaleva/carrentingsystemclient")
+				        carrentingsystemclient.push("1.0.${env.BUILD_ID}")
+				        carrentingsystemclient.push('latest')
 			        }
 		        }
             }
