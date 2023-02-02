@@ -20,10 +20,8 @@ pipeline {
 			    	    images.each() {
                             def currentImage = docker.image("mbaleva/" + it)
                             currentImage.push("latest")
+                            currentImage.push("1.0.${env.BUILD_ID}")
                         }
-                        def carrentingsystemclient = docker.image("mbaleva/carrentingsystemclient")
-				        carrentingsystemclient.push("1.0.${env.BUILD_ID}")
-				        carrentingsystemclient.push('latest')
 			        }
 		        }
             }
