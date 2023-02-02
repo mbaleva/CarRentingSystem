@@ -9,7 +9,11 @@ pipeline {
         }
 	stage('Docker Build') {
             steps {
+                powershell(script: "cd Servers")
+                powershell(script: "cd CarRentingSystem")
                 powershell(script: 'docker-compose build')
+                powershell(script: "cd ..")
+                powershell(script: "cd ..")
             }
         }
 	stage('Push images') {
