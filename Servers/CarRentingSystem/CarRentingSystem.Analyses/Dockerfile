@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["CarRentingSystem.Analyses/CarRentingSystem.Analyses.csproj", "CarRentingSystem.Analyses/"]
-COPY ["CarRentingSystem.Common/CarRentingSystem.Common.csproj", "CarRentingSystem.Common/"]
+COPY ["./Servers/CarRentingSystem/CarRentingSystem.Analyses/CarRentingSystem.Analyses.csproj", ".CarRentingSystem.Analyses/"]
+COPY ["./Servers/CarRentingSystem/CarRentingSystem.Common/CarRentingSystem.Common.csproj", "CarRentingSystem.Common/"]
 RUN dotnet restore "CarRentingSystem.Analyses/CarRentingSystem.Analyses.csproj"
 COPY . .
 WORKDIR "/src/CarRentingSystem.Analyses"
