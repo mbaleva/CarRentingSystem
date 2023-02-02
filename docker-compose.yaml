@@ -120,8 +120,7 @@ services:
         container_name: healthchecks
         image: mbaleva/carrentingsystemhealthchecks
         build:
-            context: ./Server
-            dockerfile: ./CarRentalSystem.HealthChecks/Dockerfile
+            dockerfile: ./Servers/CarRentingSystem/CarRentingSystem.HealthChecks/Dockerfile
         ports: 
             - "5500:80"
         env_file:

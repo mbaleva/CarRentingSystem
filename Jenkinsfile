@@ -16,11 +16,11 @@ pipeline {
             steps {
 		    script {
 			    docker.withRegistry('https://index.docker.io/v1/', 'DockerHub'){
-			    	def recipesweb = docker.image("mbaleva/recipesweb")
-				    recipesweb.push("1.0.${env.BUILD_ID}")
-				    recipesweb.push('latest')
-			    }
-		    }
+			    	    def recipesweb = docker.image("mbaleva/recipesweb")
+				        recipesweb.push("1.0.${env.BUILD_ID}")
+				        recipesweb.push('latest')
+			        }
+		        }
             }
         }
     }
