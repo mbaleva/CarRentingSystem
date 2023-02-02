@@ -10,8 +10,7 @@ pipeline {
 	stage('Docker Build') {
             steps {
                 powershell(script: "ls")
-                powershell(script: "cd Servers")
-                powershell(script: "cd CarRentingSystem")
+                powershell(script: "cd ./Servers/CarRentingSystem")
                 powershell(script: 'docker-compose build')
                 powershell(script: "cd ..")
                 powershell(script: "cd ..")
