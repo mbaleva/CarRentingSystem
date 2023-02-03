@@ -1,1 +1,1 @@
-.\health-check-tests.ps1
+"$PSScriptRoot\health-check-tests.ps1"
