@@ -31,7 +31,7 @@ services:
     container_name: identity
     image: mbaleva/carrentingsystemidentity:latest
     build: 
-      dockerfile: "Servers/CarRentingSystem/CarRentingSystem.Identity/Dockerfile"
+      dockerfile: "src/Servers/CarRentingSystem/CarRentingSystem.Identity/Dockerfile"
     ports:
       - "9000:80"
       - "9001:443"
@@ -49,7 +49,7 @@ services:
     container_name: cars
     image: mbaleva/carrentingsystemcars:latest
     build: 
-      dockerfile: "Servers/CarRentingSystem/CarRentingSystem.Cars/Dockerfile"
+      dockerfile: "src/Servers/CarRentingSystem/CarRentingSystem.Cars/Dockerfile"
     ports:
       - "9002:80"
       - "9003:443"
@@ -68,7 +68,7 @@ services:
     container_name: analyses
     image: mbaleva/carrentingsystemanalyses:latest
     build: 
-      dockerfile: "Servers/CarRentingSystem/CarRentingSystem.Analyses/Dockerfile"
+      dockerfile: "src/Servers/CarRentingSystem/CarRentingSystem.Analyses/Dockerfile"
     ports:
       - "9004:80"
       - "9005:443"
@@ -87,7 +87,7 @@ services:
     container_name: renting
     image: mbaleva/carrentingsystemrenting:latest
     build: 
-      dockerfile: "Servers/CarRentingSystem/CarRentingSystem.Renting/Dockerfile"
+      dockerfile: "src/Servers/CarRentingSystem/CarRentingSystem.Renting/Dockerfile"
     ports:
       - "9006:80"
       - "9007:443"
@@ -107,7 +107,7 @@ services:
     container_name: client
     image: mbaleva/carrentingsystemclient:latest
     build: 
-      dockerfile: "Client/carrentingsystem/Dockerfile"
+      dockerfile: "src/Client/carrentingsystem/Dockerfile"
     ports:
       - "9008:80"
     restart: on-failure
@@ -120,7 +120,7 @@ services:
         container_name: healthchecks
         image: mbaleva/carrentingsystemhealthchecks
         build:
-            dockerfile: ./Servers/CarRentingSystem/CarRentingSystem.HealthChecks/Dockerfile
+            dockerfile: ./src/Servers/CarRentingSystem/CarRentingSystem.HealthChecks/Dockerfile
         ports: 
             - "5500:80"
         env_file:

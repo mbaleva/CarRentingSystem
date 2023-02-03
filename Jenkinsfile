@@ -12,6 +12,13 @@ pipeline {
                 powershell(script: 'docker-compose build')
             }
         }
+    stage('Run PowerShell Tests') {
+        steps {
+            powershell(script: 'docker-compose up -d')
+            powershell(script: './tests/powershell-tests/init.ps1')
+            powershell(script: 'docker-compose down')
+        }
+    }
 	stage('Push images') {
             steps {
 		    script {

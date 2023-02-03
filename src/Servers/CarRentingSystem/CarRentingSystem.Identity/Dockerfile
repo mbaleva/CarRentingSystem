@@ -5,8 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["./Servers/CarRentingSystem/CarRentingSystem.Identity", "./Servers/CarRentingSystem/CarRentingSystem.Identity"]
-COPY ["./Servers/CarRentingSystem/CarRentingSystem.Common", "./Servers/CarRentingSystem/CarRentingSystem.Common"]
+COPY ["./src/Servers/CarRentingSystem/CarRentingSystem.Identity", "./Servers/CarRentingSystem/CarRentingSystem.Identity"]
+COPY ["./src/Servers/CarRentingSystem/CarRentingSystem.Common", "./Servers/CarRentingSystem/CarRentingSystem.Common"]
 RUN dotnet restore "Servers/CarRentingSystem/CarRentingSystem.Identity/CarRentingSystem.Identity.csproj"
 RUN dotnet build "Servers/CarRentingSystem/CarRentingSystem.Identity/CarRentingSystem.Identity.csproj" -c Release -o /app/build
 
