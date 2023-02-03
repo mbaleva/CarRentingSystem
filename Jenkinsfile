@@ -19,7 +19,13 @@ pipeline {
     }
     stage('Run PowerShell Tests') {
         steps {
-            powershell(script: './tests/powershell-tests/init.ps1')
+            powershell(script: """
+            cd tests
+            cd powershell-tests
+            .\init.ps1
+            cd ..
+            cd ..
+            """)
         }
     }
     stage('Shut down application') {
