@@ -22,7 +22,7 @@ pipeline {
             powershell(script: """
             cd tests
             cd powershell-tests
-            .\init.ps1
+            .\\init.ps1
             cd ..
             cd ..
             """)
