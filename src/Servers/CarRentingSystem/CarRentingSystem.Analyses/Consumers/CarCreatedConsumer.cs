@@ -27,7 +27,6 @@
             }
             stats.TotalCars++;
             await this.dbContext.SaveChangesAsync();
-            Console.WriteLine("Car created successfully :D");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace CarRentingSystem.Cars.UnitTests.Helpers
         public static ApplicationDbContext CreateDbContext()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                    .UseInMemoryDatabase("cars-test-db")
+                    .UseInMemoryDatabase($"cars-test-db-{Guid.NewGuid().ToString()}")
                     .Options;
             return new ApplicationDbContext(options);
         }
