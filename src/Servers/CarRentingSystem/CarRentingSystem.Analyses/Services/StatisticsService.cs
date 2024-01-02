@@ -14,6 +14,12 @@
         public StatisticsOutputModel GetAll()
         {
             var stats = this.dbContext.Data.Where(x => x.Id > 0).FirstOrDefault();
+
+            if (stats is null)
+            {
+                return new StatisticsOutputModel();
+            }
+
             var model = new StatisticsOutputModel
             {
                 TotalCars = stats.TotalCars,

@@ -1,7 +1,9 @@
 ﻿namespace CarRentingSystem.Common.Extensions
 {
+    using CarRentingSystem.Common.Services;
     using CarRentingSystem.Common.Settings;
     using GreenPipes;
+    using Hangfire;
     using MassTransit;
     using MassTransit.RabbitMqTransport;
     using MassTransit.RabbitMqTransport.Integration;
@@ -65,7 +67,8 @@
                    configuration.GetSection(nameof(ApplicationSettings)));
         public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
-            IConfiguration config)
+            IConfiguration config,
+            JwtBearerEvents events = null)
         {
             services
                     .AddHttpContextAccessor();
@@ -93,6 +96,11 @@
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
+
+                    if (events is not null)
+                    {
+                        bearer.Events = events;
+                    }
 
                 });
 
@@ -124,8 +132,8 @@
                         Console.WriteLine(settings.Password);
                         consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
                         {
-                            //endpoint.PrefetchCount = 6;
-                            //endpoint.UseMessageRetry(retry => retry.Interval(5, 200));
+                            endpoint.PrefetchCount = 6;
+                            endpoint.UseMessageRetry(retry => retry.Interval(5, 200));
 
                             endpoint.ConfigureConsumer(context, consumer);
                         }));
@@ -133,6 +141,18 @@
                 })
                 .AddMassTransitHostedService();
 
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            services
+                .AddHangfire(x => x
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSqlServerStorage(connectionString));
+
+            services.AddHangfireServer();
+
+            services.AddScoped<MessagesHostedService>();
 
             return services;
         }

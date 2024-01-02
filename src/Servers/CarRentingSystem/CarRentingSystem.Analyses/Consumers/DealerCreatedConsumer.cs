@@ -18,9 +18,13 @@
         {
             Console.WriteLine("Dealer creating started...");
             var stats = this.dbContext.Data.Where(x => x.Id > 0).FirstOrDefault();
+            if (stats is null)
+            {
+                stats = new Data.Models.Data();
+                this.dbContext.Data.Add(stats);
+            }
             stats.TotalDealers++;
             await this.dbContext.SaveChangesAsync();
-            Console.WriteLine("Dealer created successfully :D");
         }
     }
 }

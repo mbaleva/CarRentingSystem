@@ -102,6 +102,25 @@ services:
     depends_on: 
       - sqlserver
 
+  updates:
+    container_name: updates
+    image: mbaleva/carrentingsystemupdates:latest
+    build: 
+      dockerfile: "src/Servers/CarRentingSystem/CarRentingSystem.UpdateService/Dockerfile"
+    ports:
+      - "9008:80"
+      - "9009:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    env_file:
+      - ./.env/local/database-credentials.local.env
+      - ./.env/local/message-broker-settings.local.env
+    restart: on-failure
+    networks:
+      - carrentingsystem-network
+    depends_on: 
+      - sqlserver
+
   
   client:
     container_name: client
@@ -109,7 +128,7 @@ services:
     build: 
       dockerfile: "src/Client/carrentingsystem/Dockerfile"
     ports:
-      - "9008:80"
+      - "9010:80"
     restart: on-failure
     networks:
       - carrentingsystem-network

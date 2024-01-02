@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Renting", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B58D158B-EC75-4C26-A501-625358B3D864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Cars.UnitTests", "CarRentingSystem.Cars.UnitTests\CarRentingSystem.Cars.UnitTests.csproj", "{612C9E31-E5B7-4268-8288-15033185713F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Cars.UnitTests", "CarRentingSystem.Cars.UnitTests\CarRentingSystem.Cars.UnitTests.csproj", "{612C9E31-E5B7-4268-8288-15033185713F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.Cars.IntegrationTests", "CarRentingSystem.Cars.IntegrationTests\CarRentingSystem.Cars.IntegrationTests.csproj", "{10E25F20-DA75-4685-B2EB-DCAF2040A72D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarRentingSystem.Cars.IntegrationTests", "CarRentingSystem.Cars.IntegrationTests\CarRentingSystem.Cars.IntegrationTests.csproj", "{10E25F20-DA75-4685-B2EB-DCAF2040A72D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarRentingSystem.UpdateService", "CarRentingSystem.UpdateService\CarRentingSystem.UpdateService.csproj", "{6D41B54C-1022-4A94-9E82-BB9E90798C2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{10E25F20-DA75-4685-B2EB-DCAF2040A72D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10E25F20-DA75-4685-B2EB-DCAF2040A72D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10E25F20-DA75-4685-B2EB-DCAF2040A72D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D41B54C-1022-4A94-9E82-BB9E90798C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D41B54C-1022-4A94-9E82-BB9E90798C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D41B54C-1022-4A94-9E82-BB9E90798C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D41B54C-1022-4A94-9E82-BB9E90798C2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

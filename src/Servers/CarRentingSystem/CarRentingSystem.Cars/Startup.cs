@@ -1,11 +1,13 @@
 namespace CarRentingSystem.Cars
 {
     using CarRentingSystem.Cars.Data;
+    using CarRentingSystem.Cars.Data.Models;
     using CarRentingSystem.Cars.Services.Cars;
     using CarRentingSystem.Cars.Services.Categories;
     using CarRentingSystem.Cars.Services.Dealers;
     using CarRentingSystem.Cars.Services.Manufacturers;
     using CarRentingSystem.Common.Extensions;
+    using CarRentingSystem.Common.Services.Data;
     using CarRentingSystem.Common.Services.Users;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -27,6 +29,7 @@ namespace CarRentingSystem.Cars
                 .AddTransient<IDealersService, DealersService>()
                 .AddTransient<ICategoriesService, CategoriesService>()
                 .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddScoped<IMessagesService, MessagesService>()
                 .AddMessageBroker(this.Configuration)
                 .AddHealthChecks(this.Configuration)
                 .AddSwagger()
