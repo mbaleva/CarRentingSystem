@@ -7,6 +7,14 @@ pipeline {
                 echo "$GIT_BRANCH"
             }
         }
+	stage('Code coverage') {
+            steps {
+                powershell(script: """
+            	cd scripts
+            	.\\test-coverage.ps1
+            	""")
+            }
+        }
 	stage('Docker Build') {
             steps {
                 powershell(script: 'docker-compose build')
