@@ -19,7 +19,8 @@
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage()
+                    .UseStatusCodePages();
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {

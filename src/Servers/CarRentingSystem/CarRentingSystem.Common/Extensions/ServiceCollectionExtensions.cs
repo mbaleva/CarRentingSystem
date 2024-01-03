@@ -56,7 +56,8 @@
             IConfiguration config) where TDbContext : DbContext
                 => services.AddScoped<DbContext, TDbContext>()
                         .AddDbContext<TDbContext>(dbOptions =>
-                                dbOptions.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+                                dbOptions.UseSqlServer(config.GetConnectionString("DefaultConnection")))
+                        .AddDatabaseDeveloperPageExceptionFilter();
 
 
         public static IServiceCollection AddAppSettings(
