@@ -19,6 +19,7 @@ public class Startup
             .AddJwtAuthentication(
                 this.Configuration,
                 JwtConfig.BearerEvents)
+            .AddRequestPipelineExtensions()
             .AddMessageBroker(
                 this.Configuration,
                 true,

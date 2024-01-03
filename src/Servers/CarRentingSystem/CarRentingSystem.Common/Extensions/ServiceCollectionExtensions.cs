@@ -1,6 +1,9 @@
 ﻿namespace CarRentingSystem.Common.Extensions
 {
+    using CarRentingSystem.Common.Filters;
+    using CarRentingSystem.Common.Middlewares;
     using CarRentingSystem.Common.Services;
+    using CarRentingSystem.Common.Services.RateLimiting;
     using CarRentingSystem.Common.Settings;
     using GreenPipes;
     using Hangfire;
@@ -9,6 +12,7 @@
     using MassTransit.RabbitMqTransport.Integration;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -165,6 +169,26 @@
                 settings.GetValue<string>(nameof(MessageBrokerSettings.Host)),
                 settings.GetValue<string>(nameof(MessageBrokerSettings.Username)),
                 settings.GetValue<string>(nameof(MessageBrokerSettings.Password)));
+        }
+
+        public static IServiceCollection AddRequestPipelineExtensions(this IServiceCollection services) 
+        {
+            services.AddScoped<RateLimiterMiddleware>();
+            services.AddMemoryCache();
+
+            services.AddScoped<SeleniumDetectorMiddleware>();
+            services.AddSingleton<IRateLimiter, RateLimiter>((sp) => 
+            {
+                return new RateLimiter(1000, TimeSpan.FromMinutes(1));
+            });
+            services.AddScoped<CacheActionAttribute>();
+
+            services.AddControllers(options => 
+            {
+                options.Filters.AddService(typeof(CacheActionAttribute));
+            });
+
+            return services;
         }
     }
 }

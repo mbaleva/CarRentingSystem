@@ -24,6 +24,7 @@ namespace CarRentingSystem.Cars
             services.AddDb<ApplicationDbContext>(this.Configuration)
                 .AddAppSettings(this.Configuration)
                 .AddJwtAuthentication(this.Configuration)
+                .AddRequestPipelineExtensions()
                 .AddTransient<ICarsService, CarsService>()
                 .AddTransient<IManufacturerService, ManufacturerService>()
                 .AddTransient<IDealersService, DealersService>()
