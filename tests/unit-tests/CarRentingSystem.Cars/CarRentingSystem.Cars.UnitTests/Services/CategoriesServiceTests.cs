@@ -86,21 +86,29 @@ namespace CarRentingSystem.Cars.UnitTests.Services.Categories
             result.Count().ShouldBe(2);
         }
 
-        [Fact]
-        public async Task AddCategory_AddsCategorySuccessfully()
+        public static IEnumerable<object[]> TestCases()
+        {
+            yield return new object[] { "name" };
+            yield return new object[] { string.Empty };
+        }
+
+        [Theory]
+        [MemberData(nameof(TestCases))]
+        [Trait("Category", "DataDriven")]
+        public async Task AddCategory_AddsCategorySuccessfully(string name)
         {
             // Arrange
             var dbContext = DbContextHelper.CreateDbContext();
             var service = new CategoriesService(dbContext);
-            var addModel = new AddCategoryInputModel { Name = "NewCategory" };
+            var addModel = new AddCategoryInputModel { Name = name };
 
             // Act
             await service.AddCategory(addModel);
-            var addedCategory = dbContext.Categories.FirstOrDefault(c => c.Name == "NewCategory");
+            var addedCategory = dbContext.Categories.FirstOrDefault(c => c.Name == name);
 
             // Assert
             addedCategory.ShouldNotBeNull();
-            addedCategory.Name.ShouldBe("NewCategory");
+            addedCategory.Name.ShouldBe(name);
         }
 
         [Fact]
