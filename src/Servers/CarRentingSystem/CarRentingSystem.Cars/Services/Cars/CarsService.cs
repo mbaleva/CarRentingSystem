@@ -13,6 +13,8 @@
     using MassTransit;
     using CarRentingSystem.Common.Messages;
     using Microsoft.EntityFrameworkCore;
+    using CarRentingSystem.Common.Services.Data;
+    using CarRentingSystem.Common.Data.Models;
 
     public class CarsService : ICarsService
     {
@@ -20,6 +22,7 @@
         private readonly IManufacturerService manufacturer;
         private readonly IDealersService dealers;
         private readonly ICategoriesService categories;
+        private readonly IMessagesService messagesService;
         private readonly IBus bus;
 
         private const int CARS_PER_PAGE = 1500;
@@ -29,13 +32,15 @@
             IManufacturerService manufacturer,
             IDealersService dealers,
             ICategoriesService categories,
-            IBus bus)
+            IBus bus,
+            IMessagesService messagesService)
         {
             this.dbContext = dbContext;
             this.manufacturer = manufacturer;
             this.dealers = dealers;
             this.categories = categories;
             this.bus = bus;
+            this.messagesService = messagesService;
         }
         public async Task<int> AddAsync(AddCarInputModel model, string userId)
         {
@@ -59,11 +64,19 @@
                 HasClimateControl = model.HasClimateControl,
                 SeatsCount = model.SeatsCount,
             };
-            await this.dbContext.Cars.AddAsync(car);
-            await this.dbContext.SaveChangesAsync();
 
-            var message = new CarCreatedMessage();
-            await this.bus.Publish(message);
+            var message = new Message 
+            {
+                Published = false,
+                Type = typeof(CarCreatedMessage)
+            };
+
+            await messagesService.Save<Car>(car, message);
+
+            var carMessage = new CarCreatedMessage();
+            await this.bus.Publish(carMessage);
+
+            await messagesService.MarkMessageAsPublished(message.Id);
 
             return car.Id;
         }
@@ -110,7 +123,19 @@
                 ManufacturerName = car.Manufacturer,
                 Model = car.Model,
             };
+
+            var baseMessage = new Message 
+            {
+                Type = typeof(CarViewedMessage),
+                Data = message,
+                Published = false
+            };
+
+            await messagesService.SaveMessages(baseMessage);
+
             await this.bus.Publish(message);
+
+            await messagesService.MarkMessageAsPublished(baseMessage.Id);
             return car;
         }
         public IEnumerable<CarInListModel> GetAll(int page)

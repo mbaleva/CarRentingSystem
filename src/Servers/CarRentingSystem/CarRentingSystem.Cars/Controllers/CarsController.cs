@@ -56,15 +56,29 @@
             => this.cars.GetAll(page);
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<CarByIdModel>> ById([FromQuery]int id)
+        public async Task<ActionResult<CarByIdModel>> ById([FromQuery]int id, string name)
         {
             CarByIdModel model;
+
             if (this.User.Identity.IsAuthenticated)
             {
                 model = await this.cars.GetCarById(id, currentUser.UserId);
             }
-            model = await this.cars.GetCarById(id);
-       
+            else
+            {
+                model = await this.cars.GetCarById(id);
+            }
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            if (!string.Equals(name, model.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Invalid car name in the URL");
+            }
+
             return model;
         }
         [Authorize]

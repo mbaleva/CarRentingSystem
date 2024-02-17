@@ -19,9 +19,14 @@
         {
             Console.WriteLine("Car creating started...");
             var stats = this.dbContext.Data.Where(x => x.Id > 0).FirstOrDefault();
+
+            if (stats is null)
+            {
+                stats = new Data.Models.Data();
+                this.dbContext.Data.Add(stats);
+            }
             stats.TotalCars++;
             await this.dbContext.SaveChangesAsync();
-            Console.WriteLine("Car created successfully :D");
         }
     }
 }

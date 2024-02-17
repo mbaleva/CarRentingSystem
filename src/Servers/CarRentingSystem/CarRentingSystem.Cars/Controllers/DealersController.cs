@@ -2,6 +2,7 @@
 {
     using CarRentingSystem.Cars.Models.Dealers;
     using CarRentingSystem.Cars.Services.Dealers;
+    using CarRentingSystem.Common.Filters;
     using CarRentingSystem.Common.Services.Users;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,7 @@
             return this.BadRequest("You are not a dealer!!!");
         }
         [HttpGet]
+        [ServiceFilter(typeof(CacheActionAttribute))]
         public IEnumerable<DealerInListModel> All(int id)
         {
             return this.dealersService.GetAllDealers(id, ITEMS_PER_PAGE);

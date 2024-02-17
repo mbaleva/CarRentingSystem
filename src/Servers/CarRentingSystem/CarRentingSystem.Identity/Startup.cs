@@ -21,7 +21,8 @@ namespace CarRentingSystem.Identity
             services.AddDb<ApplicationDbContext>(this.Configuration)
                 .AddHealthChecks(this.Configuration)
                 .AddAppSettings(this.Configuration)
-                .AddJwtAuthentication(this.Configuration);
+                .AddJwtAuthentication(this.Configuration)
+                .AddRequestPipelineExtensions();
             services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IJwtService, JwtService>();
             services.AddSwagger();

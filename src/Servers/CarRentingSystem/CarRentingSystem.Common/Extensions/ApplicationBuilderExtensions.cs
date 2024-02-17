@@ -10,6 +10,7 @@
     using System;
     using Microsoft.AspNetCore.Diagnostics.HealthChecks;
     using HealthChecks.UI.Client;
+    using CarRentingSystem.Common.Middlewares;
 
     public static class ApplicationBuilderExtensions
     {
@@ -19,7 +20,8 @@
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseDeveloperExceptionPage()
+                    .UseStatusCodePages();
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
@@ -36,8 +38,21 @@
                     .AllowAnyMethod())
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => endpoints.MapControllers());
-         
+                .UseMiddleware<SeleniumDetectorMiddleware>()
+                .UseMiddleware<RateLimiterMiddleware>()
+                .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                        name: "CarByIdRoute",
+                        pattern: "Cars/{controller=ById}/{id}/{name}",
+                        defaults: new { action = "ById" },
+                        constraints: new { id = @"\d+" });
+
+                    endpoints.MapControllerRoute(
+                        name: "default",
+                        pattern: "{controller=Home}/{action=Index}/{id?}");
+                });
+
             app.UseHealthChecks("/health", new HealthCheckOptions 
             {
                 Predicate = check => true,

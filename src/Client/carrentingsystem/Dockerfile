@@ -9,7 +9,7 @@ ARG configuration=production
 RUN ng build --output-path=dist --configuration=$configuration
 FROM nginx:1.16.0-alpine
 RUN rm -rf /usr/share/nginx/html/*
-COPY src/Client/carrentingsystem/nginx.conf /etc/nginx/nginx.conf
+COPY /src/Client/carrentingsystem/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

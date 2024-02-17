@@ -1,12 +1,18 @@
 ﻿namespace CarRentingSystem.Common.Extensions
 {
+    using CarRentingSystem.Common.Filters;
+    using CarRentingSystem.Common.Middlewares;
+    using CarRentingSystem.Common.Services;
+    using CarRentingSystem.Common.Services.RateLimiting;
     using CarRentingSystem.Common.Settings;
     using GreenPipes;
+    using Hangfire;
     using MassTransit;
     using MassTransit.RabbitMqTransport;
     using MassTransit.RabbitMqTransport.Integration;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -54,7 +60,8 @@
             IConfiguration config) where TDbContext : DbContext
                 => services.AddScoped<DbContext, TDbContext>()
                         .AddDbContext<TDbContext>(dbOptions =>
-                                dbOptions.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+                                dbOptions.UseSqlServer(config.GetConnectionString("DefaultConnection")))
+                        .AddDatabaseDeveloperPageExceptionFilter();
 
 
         public static IServiceCollection AddAppSettings(
@@ -65,7 +72,8 @@
                    configuration.GetSection(nameof(ApplicationSettings)));
         public static IServiceCollection AddJwtAuthentication(
             this IServiceCollection services,
-            IConfiguration config)
+            IConfiguration config,
+            JwtBearerEvents events = null)
         {
             services
                     .AddHttpContextAccessor();
@@ -93,6 +101,11 @@
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
+
+                    if (events is not null)
+                    {
+                        bearer.Events = events;
+                    }
 
                 });
 
@@ -124,8 +137,8 @@
                         Console.WriteLine(settings.Password);
                         consumers.ForEach(consumer => rmq.ReceiveEndpoint(consumer.FullName, endpoint =>
                         {
-                            //endpoint.PrefetchCount = 6;
-                            //endpoint.UseMessageRetry(retry => retry.Interval(5, 200));
+                            endpoint.PrefetchCount = 6;
+                            endpoint.UseMessageRetry(retry => retry.Interval(5, 200));
 
                             endpoint.ConfigureConsumer(context, consumer);
                         }));
@@ -133,6 +146,18 @@
                 })
                 .AddMassTransitHostedService();
 
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+            services
+                .AddHangfire(x => x
+                    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                    .UseSimpleAssemblyNameTypeSerializer()
+                    .UseRecommendedSerializerSettings()
+                    .UseSqlServerStorage(connectionString));
+
+            services.AddHangfireServer();
+
+            services.AddScoped<MessagesHostedService>();
 
             return services;
         }
@@ -144,6 +169,26 @@
                 settings.GetValue<string>(nameof(MessageBrokerSettings.Host)),
                 settings.GetValue<string>(nameof(MessageBrokerSettings.Username)),
                 settings.GetValue<string>(nameof(MessageBrokerSettings.Password)));
+        }
+
+        public static IServiceCollection AddRequestPipelineExtensions(this IServiceCollection services) 
+        {
+            services.AddScoped<RateLimiterMiddleware>();
+            services.AddMemoryCache();
+
+            services.AddScoped<SeleniumDetectorMiddleware>();
+            services.AddSingleton<IRateLimiter, RateLimiter>((sp) => 
+            {
+                return new RateLimiter(1000, TimeSpan.FromMinutes(1));
+            });
+            services.AddScoped<CacheActionAttribute>();
+
+            services.AddControllers(options => 
+            {
+                options.Filters.AddService(typeof(CacheActionAttribute));
+            });
+
+            return services;
         }
     }
 }

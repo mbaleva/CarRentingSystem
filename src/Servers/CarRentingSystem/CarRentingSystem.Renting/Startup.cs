@@ -18,6 +18,7 @@
         public void ConfigureServices(IServiceCollection services) => services
                 .AddDb<ApplicationDbContext>(this.Configuration)
                 .AddJwtAuthentication(this.Configuration)
+                .AddRequestPipelineExtensions()
                 .AddHealthChecks(this.Configuration)
                 .AddAuthorization()
                 .AddMessageBroker(this.Configuration)
